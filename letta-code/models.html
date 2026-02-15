@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 模型配置 - 使用任何模型">
+    <title>模型配置 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>模型配置</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        在 Letta Code 中使用任何模型
+                    </p>
+
+                    <p>Letta Code 是<strong>模型无关</strong>的。代理可以使用 Claude、GPT、Gemini 或其他支持的模型。用户可以随时更改代理的底层模型，甚至在对话过程中。</p>
+
+                    <p>请访问 <a href="https://leaderboard.letta.com" target="_blank">leaderboard.letta.com</a> 查看比较模型性能的基准测试结果。</p>
+
+                    <h2 id="switching-models">切换模型</h2>
+                    <p>在会话中使用 <code>/model</code> 命令切换模型：</p>
+                    <pre><code>> /model</code></pre>
+
+                    <p>这将打开一个模型选择器，包含两个类别：</p>
+                    <ul>
+                        <li><strong>已支持</strong> - 预配置的模型，具有优化的设置</li>
+                        <li>所有可用</strong> - 您账户上可用的所有模型，包括自定义 BYOK（自带密钥）模型</li>
+                    </ul>
+
+                    <p>使用 <code>Tab</code> 切换类别，方向键导航，<code>j</code>/<code>k</code> 翻页。</p>
+
+                    <p>您也可以在启动 Letta Code 时指定模型：</p>
+                    <pre><code>letta --model gpt-5-codex
+letta -m haiku</code></pre>
+
+                    <h2 id="toolsets">工具集</h2>
+                    <p>不同的模型被训练为最适合使用不同的工具。例如，GPT-5 模型被训练使用基于补丁的编辑工具，而 Claude 模型更适合使用基于字符串的编辑工具。</p>
+
+                    <p>Letta Code 通过<strong>工具集</strong>自动处理这个问题 - 为每个模型系列优化的工具配置。当您使用 <code>/model</code> 切换模型时，Letta Code 会自动切换到最佳工具集。</p>
+
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>工具集</th>
+                                    <th>优化用于</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Default</td>
+                                    <td>Claude 模型（Anthropic）</td>
+                                </tr>
+                                <tr>
+                                    <td>Codex</td>
+                                    <td>GPT 模型（OpenAI）</td>
+                                </tr>
+                                <tr>
+                                    <td>Gemini</td>
+                                    <td>Google 模型</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="manual-toolset">手动覆盖工具集</h3>
+                    <p>如果您想强制使用特定工具集：</p>
+                    <pre><code>letta --toolset codex</code></pre>
+
+                    <p>或在交互模式中：</p>
+                    <pre><code>> /toolset</code></pre>
+
+                    <h2 id="recommended-models">推荐模型</h2>
+                    <div class="grid md:grid-cols-2 gap-6 my-8">
+                        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl p-6 border border-indigo-200 dark:border-indigo-700">
+                            <h3 class="font-semibold text-lg mb-2">🥇 最佳性能</h3>
+                            <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                                <li><strong>Claude Opus 4.5</strong> - 最高质量输出</li>
+                                <li><strong>GPT-5.2-Codex</strong> - OpenAI 最佳编程模型</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
+                            <h3 class="font-semibold text-lg mb-2">⚡ 性价比之选</h3>
+                            <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                                <li><strong>Claude Sonnet 4.5</strong> - 速度与质量的平衡</li>
+                                <li><strong>GPT-4o</strong> - 快速响应</li>
+                                <li><strong>Claude Haiku</strong> - 最快最便宜</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 id="model-ids">模型 ID 参考</h2>
+                    <p>常用的模型 ID：</p>
+
+                    <h3>Claude 模型</h3>
+                    <pre><code>opus-4.5      # Claude Opus 4.5
+sonnet-4.5    # Claude Sonnet 4.5
+haiku         # Claude Haiku</code></pre>
+
+                    <h3>OpenAI 模型</h3>
+                    <pre><code>gpt-5-codex   # GPT-5 Codex (编程优化)
+gpt-5         # GPT-5
+gpt-4o        # GPT-4o</code></pre>
+
+                    <h3>Google 模型</h3>
+                    <pre><code>gemini-2.0-flash    # Gemini 2.0 Flash
+gemini-1.5-pro      # Gemini 1.5 Pro</code></pre>
+
+                    <h2 id="byok">自带密钥 (BYOK)</h2>
+                    <p>您可以使用自己的 API 密钥来直接向提供商付费。使用 <code>/connect</code> 命令配置：</p>
+                    <pre><code>> /connect</code></pre>
+
+                    <p>支持的提供商：</p>
+                    <ul>
+                        <li>Anthropic (Claude)</li>
+                        <li>OpenAI (GPT)</li>
+                        <li>Google (Gemini)</li>
+                        <li>zAI</li>
+                        <li>Minimax</li>
+                        <li>OpenRouter</li>
+                        <li>Azure OpenAI</li>
+                        <li>Amazon Bedrock (Claude)</li>
+                        <li>Together AI</li>
+                    </ul>
+
+                    <p>更多详情请参阅 <a href="providers.html">提供商</a> 页面。</p>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <ul>
+                        <li><a href="providers.html">提供商</a> - 了解支持的模型提供商</li>
+                        <li><a href="configuration.html">配置</a> - 配置 Letta Code 设置</li>
+                        <li><a href="quickstart.html">快速开始</a> - 开始使用 Letta Code</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

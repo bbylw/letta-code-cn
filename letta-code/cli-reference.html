@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code CLI 参考 - 命令行选项和标志">
+    <title>CLI 参考 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>CLI 参考</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        Letta Code 的命令行选项和标志
+                    </p>
+
+                    <h2 id="basic-usage">基本用法</h2>
+                    <pre><code>letta [options] [-p "prompt"]</code></pre>
+
+                    <h2 id="session-flags">会话标志</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标志</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>letta</code></td><td>恢复与上次使用的代理的默认对话</td></tr>
+                                <tr><td><code>letta --new</code></td><td>开始新对话（用于并发会话）</td></tr>
+                                <tr><td><code>letta --continue</code>, <code>-c</code></td><td>完全恢复上次会话（相同代理 + 对话）</td></tr>
+                                <tr><td><code>letta --resume</code>, <code>-r</code></td><td>打开对话选择器以浏览和恢复过去的会话</td></tr>
+                                <tr><td><code>letta --conversation &lt;id&gt;</code>, <code>--conv</code></td><td>通过 ID 恢复特定对话</td></tr>
+                                <tr><td><code>letta --default</code></td><td>使用代理的默认对话（需要 <code>--agent</code> 或 <code>--name</code>）</td></tr>
+                                <tr><td><code>letta -n "Name" --default</code></td><td>通过名称使用代理的默认对话</td></tr>
+                                <tr><td><code>letta --conv default --agent &lt;id&gt;</code></td><td>同上（显式形式）</td></tr>
+                                <tr><td><code>letta --conv &lt;agent-id&gt;</code></td><td>简写：使用指定代理的默认对话</td></tr>
+                                <tr><td><code>letta --new-agent</code></td><td>强制创建新代理</td></tr>
+                                <tr><td><code>letta --from-af &lt;path&gt;</code></td><td>从 <a href="https://docs.letta.com/guides/agents/agent-files" target="_blank">AgentFile</a> (.af) 创建新代理</td></tr>
+                                <tr><td><code>letta --agent &lt;id&gt;</code>, <code>-a</code></td><td>通过 ID 使用特定代理</td></tr>
+                                <tr><td><code>letta --name &lt;name&gt;</code>, <code>-n</code></td><td>通过名称恢复代理（匹配固定或最近的代理）</td></tr>
+                                <tr><td><code>letta --info</code></td><td>显示项目信息、技能目录和固定代理（不启动会话）</td></tr>
+                                <tr><td><code>letta --help</code></td><td>显示帮助</td></tr>
+                                <tr><td><code>letta --version</code></td><td>显示版本</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="model-config">模型和配置</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标志</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>--model &lt;model&gt;</code>, <code>-m</code></td><td>指定模型（例如 <code>sonnet-4.5</code>、<code>gpt-5-codex</code>）</td></tr>
+                                <tr><td><code>--system &lt;preset&gt;</code></td><td>使用系统提示预设（例如 <code>letta-claude</code>、<code>codex</code>）</td></tr>
+                                <tr><td><code>--system-custom &lt;text&gt;</code></td><td>使用自定义系统提示字符串（用于新代理）</td></tr>
+                                <tr><td><code>--system-append &lt;text&gt;</code></td><td>将文本附加到解析的系统提示（用于新代理）</td></tr>
+                                <tr><td><code>--toolset &lt;name&gt;</code></td><td>强制工具集：<code>default</code>、<code>codex</code> 或 <code>gemini</code></td></tr>
+                                <tr><td><code>--skills &lt;path&gt;</code></td><td>自定义技能目录</td></tr>
+                                <tr><td><code>--sleeptime</code></td><td>启用睡眠时间记忆管理（仅用于新代理）</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><strong>注意：</strong>恢复会话时，<code>--model</code> 标志可能不一致。在交互会话期间使用 <code>/model</code> 命令来更改模型。</p>
+
+                    <p><strong>注意：</strong>当使用 <code>--agent &lt;id&gt;</code> 连接到现有代理时，代理的现有配置（模型、工具集）会被保留。在会话期间使用 <code>/model</code> 或 <code>/toolset</code> 来更改它们。</p>
+
+                    <h2 id="headless">无头模式</h2>
+                    <p>非交互式运行 Letta Code，用于自动化和 CI/CD。详细用法请参阅 <a href="headless.html">无头模式</a>。</p>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标志</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>-p "prompt"</code></td><td>运行一次性提示（无头模式）</td></tr>
+                                <tr><td><code>--output-format &lt;fmt&gt;</code></td><td>输出格式：<code>text</code>、<code>json</code> 或 <code>stream-json</code></td></tr>
+                                <tr><td><code>--input-format &lt;fmt&gt;</code></td><td>输入格式：<code>stream-json</code> 用于双向模式</td></tr>
+                                <tr><td><code>--yolo</code></td><td>绕过所有权限提示</td></tr>
+                                <tr><td><code>--permission-mode &lt;mode&gt;</code></td><td>设置权限模式</td></tr>
+                                <tr><td><code>--tools "Tool1,Tool2"</code></td><td>限制可用工具</td></tr>
+                                <tr><td><code>--allowedTools "..."</code></td><td>允许特定工具模式</td></tr>
+                                <tr><td><code>--disallowedTools "..."</code></td><td>阻止特定工具模式</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="memory-config">记忆配置</h2>
+                    <p>创建新代理时配置记忆块。</p>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标志</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>--init-blocks &lt;names&gt;</code></td><td>逗号分隔的预设块名称（例如 <code>"persona,project"</code>）</td></tr>
+                                <tr><td><code>--memory-blocks &lt;json&gt;</code></td><td>自定义记忆块的 JSON 数组</td></tr>
+                                <tr><td><code>--block-value &lt;label&gt;=&lt;value&gt;</code></td><td>设置预设块的值（可多次指定）</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="maintenance">维护</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>标志</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>letta update</code></td><td>手动检查并安装更新</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="env-vars">环境变量</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>变量</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>LETTA_API_KEY</code></td><td>用于认证的 API 密钥（在 <a href="https://app.letta.com/api-keys" target="_blank">app.letta.com/api-keys</a> 获取）</td></tr>
+                                <tr><td><code>LETTA_BASE_URL</code></td><td>自托管 Letta 服务器的基础 URL（例如 <code>http://localhost:8283</code>）</td></tr>
+                                <tr><td><code>LETTA_DEBUG</code></td><td>设置为 <code>1</code> 启用调试日志</td></tr>
+                                <tr><td><code>LETTA_CODE_TELEM</code></td><td>设置为 <code>0</code> 禁用匿名遥测</td></tr>
+                                <tr><td><code>DISABLE_AUTOUPDATER</code></td><td>设置为 <code>1</code> 禁用自动更新</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>在您的 shell 配置文件（<code>~/.bashrc</code>、<code>~/.zshrc</code>）或 <code>.env</code> 文件中设置这些：</p>
+                    <pre><code>export LETTA_API_KEY="your-key-here"
+export LETTA_BASE_URL="http://localhost:8283"</code></pre>
+
+                    <h2 id="keyboard">键盘快捷键</h2>
+                    <p>这些快捷键在交互会话期间有效。</p>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>快捷键</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>/</code></td><td>打开命令自动完成</td></tr>
+                                <tr><td><code>@</code></td><td>打开文件自动完成</td></tr>
+                                <tr><td><code>!</code></td><td>进入 bash 模式（直接运行 shell 命令）</td></tr>
+                                <tr><td><code>Tab</code></td><td>自动完成命令或文件路径</td></tr>
+                                <tr><td><code>Shift+Enter</code></td><td>插入换行（多行输入）</td></tr>
+                                <tr><td><code>↑</code>/<code>↓</code></td><td>导航历史或菜单项</td></tr>
+                                <tr><td><code>Esc</code></td><td>取消对话框或清除输入（双击）</td></tr>
+                                <tr><td><code>Ctrl+C</code></td><td>中断操作或退出（双击）</td></tr>
+                                <tr><td><code>Ctrl+V</code></td><td>粘贴内容或图片</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>Bash 模式让您直接运行 shell 命令，无需涉及代理。在空输入行上按 <code>!</code> 进入 bash 模式（提示符变为 <code>!</code>），输入您的命令，然后按 Enter。在空行上按 Backspace 退出 bash 模式。</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

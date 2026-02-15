@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 配置 - 配置设置和偏好">
+    <title>配置 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>配置</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        配置 Letta Code 设置和偏好
+                    </p>
+
+                    <p>Letta Code 使用具有全局和项目级设置的分层配置系统。</p>
+
+                    <h2 id="authentication">认证</h2>
+
+                    <h3 id="letta-api">Letta API（默认）</h3>
+                    <p>首次运行时，Letta Code 会提示您通过 OAuth 认证：</p>
+                    <ol>
+                        <li>运行 <code>letta</code></li>
+                        <li>按照浏览器提示在 <code>app.letta.com</code> 登录</li>
+                    </ol>
+
+                    <h3 id="api-key">API 密钥</h3>
+                    <p>或者，直接设置 API 密钥：</p>
+                    <pre><code>export LETTA_API_KEY=your-api-key</code></pre>
+
+                    <h3 id="docker">Docker</h3>
+                    <p>请参阅 <a href="../guides/docker.html">Docker 设置</a> 以将 Letta Code 与在 Docker 中运行的 Letta 服务器一起使用。</p>
+
+                    <h2 id="config-files">配置文件</h2>
+
+                    <h3 id="global-settings">全局设置 (~/.letta/settings.json)</h3>
+                    <p>适用于所有项目：</p>
+                    <pre><code>{
+  "tokenStreaming": true,
+  "globalSharedBlockIds": {
+    "persona": "block-id-...",
+    "human": "block-id-..."
+  }
+}</code></pre>
+
+                    <h3 id="project-settings">项目设置 (.letta/settings.local.json)</h3>
+                    <p>个人的、gitignore 的 - 您在此项目的代理：</p>
+                    <pre><code>{
+  "lastAgent": "agent-id-..."
+}</code></pre>
+
+                    <h3 id="shared-settings">共享项目设置 (.letta/settings.json)</h3>
+                    <p>可以提交以与团队共享：</p>
+                    <pre><code>{
+  "permissions": {
+    "allow": ["Bash(pnpm lint)", "Bash(pnpm test)"]
+  }
+}</code></pre>
+
+                    <h2 id="settings-reference">设置参考</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>设置</th>
+                                    <th>类型</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>tokenStreaming</code></td><td><code>boolean</code></td><td>启用实时 token 流式传输</td></tr>
+                                <tr><td><code>enableSleeptime</code></td><td><code>boolean</code></td><td>启用睡眠时间代理进行被动记忆更新（默认：<code>false</code>）</td></tr>
+                                <tr><td><code>lastAgent</code></td><td><code>string</code></td><td>上次使用的代理的 ID（用于自动恢复）</td></tr>
+                                <tr><td><code>globalSharedBlockIds</code></td><td><code>object</code></td><td>全局记忆块的 ID</td></tr>
+                                <tr><td><code>permissions.allow</code></td><td><code>string[]</code></td><td>自动允许的模式</td></tr>
+                                <tr><td><code>permissions.deny</code></td><td><code>string[]</code></td><td>始终拒绝的模式</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="env-vars">环境变量</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>变量</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>LETTA_API_KEY</code></td><td>用于认证的 API 密钥（OAuth 的替代方案）</td></tr>
+                                <tr><td><code>LETTA_BACKFILL</code></td><td>代理恢复时加载消息历史。设置为 <code>0</code> 或 <code>false</code> 以干净的聊天开始。默认：<code>true</code></td></tr>
+                                <tr><td><code>LETTA_ENABLE_LSP</code></td><td>启用 LSP 诊断以进行类型错误检测。设置为 <code>1</code> 启用</td></tr>
+                                <tr><td><code>DISABLE_AUTOUPDATER</code></td><td>禁用自动更新。设置为 <code>1</code> 禁用</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="lsp">LSP 诊断</h2>
+                    <p>Letta Code 可以与语言服务器协议（LSP）服务器集成，以在读取文件时提供自动类型错误检测。</p>
+
+                    <h3 id="enable-lsp">启用 LSP</h3>
+                    <pre><code>export LETTA_ENABLE_LSP=1</code></pre>
+
+                    <h3 id="supported-languages">支持的语言</h3>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>语言</th>
+                                    <th>扩展名</th>
+                                    <th>LSP 服务器</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>TypeScript/JavaScript</td><td><code>.ts</code>, <code>.tsx</code>, <code>.js</code>, <code>.jsx</code>, <code>.mjs</code>, <code>.cjs</code></td><td><code>typescript-language-server</code></td></tr>
+                                <tr><td>Python</td><td><code>.py</code>, <code>.pyi</code></td><td><code>pyright</code></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="how-lsp-works">工作原理</h3>
+                    <p>当启用 LSP 并且您读取支持的文件时：</p>
+                    <ol>
+                        <li>Letta Code 启动适当的 LSP 服务器（如果缺失则自动安装）</li>
+                        <li>文件被分析以查找类型错误、语法错误和其他诊断</li>
+                        <li>任何错误都会附加到 <code>&lt;diagnostics&gt;</code> 块中的文件内容</li>
+                    </ol>
+
+                    <pre><code>This file has errors, please fix
+&lt;diagnostics&gt;
+ERROR [10:5] Cannot find name 'foo'
+ERROR [15:3] Type 'string' is not assignable to type 'number'
+&lt;/diagnostics&gt;</code></pre>
+
+                    <h3 id="lsp-behavior">行为</h3>
+                    <p>通过 Read 工具上的 <code>include_types</code> 参数进行手动控制：</p>
+                    <ul>
+                        <li><code>include_types: false</code> - 跳过诊断（即使对于小文件）</li>
+                        <li><code>include_types: true</code> - 强制包含诊断（即使对于大文件）</li>
+                    </ul>
+
+                    <p>这有助于代理在进行编辑之前捕获类型错误，减少迭代周期。</p>
+
+                    <h2 id="updates">更新</h2>
+                    <p>Letta Code 自动保持自身更新，以确保您拥有最新的功能和修复。</p>
+                    <ul>
+                        <li><strong>应用更新</strong>：更新在您下次启动 Letta Code 时生效</li>
+                        <li><strong>更新过程</strong>：在后台自动下载和安装</li>
+                        <li><strong>更新检查</strong>：在启动时执行，并在运行时定期执行</li>
+                    </ul>
+
+                    <h3 id="disable-updates">禁用自动更新</h3>
+                    <pre><code>export DISABLE_AUTOUPDATER=1</code></pre>
+
+                    <h3 id="manual-update">手动更新</h3>
+                    <pre><code>letta update</code></pre>
+
+                    <h2 id="gitignore">推荐的 .gitignore</h2>
+                    <pre><code># Letta Code personal settings
+.letta/settings.local.json</code></pre>
+
+                    <p>保持 <code>.letta/settings.json</code> 跟踪以与团队共享项目上下文。</p>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <ul>
+                        <li><a href="cli-reference.html">CLI 参考</a> - 命令行选项</li>
+                        <li><a href="providers.html">提供商</a> - 模型提供商配置</li>
+                        <li><a href="../guides/docker.html">Docker</a> - 自托管设置</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

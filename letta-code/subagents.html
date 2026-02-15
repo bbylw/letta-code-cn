@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 子代理 - 任务分解和并行执行">
+    <title>子代理 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>子代理</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        用于任务分解和并行执行的无状态代理
+                    </p>
+
+                    <p>子代理是您的代理将任务委托给的<strong>工作者</strong>。要将<strong>知识</strong>加载到代理的记忆中，请参阅<a href="skills.html">技能</a>。</p>
+
+                    <p>子代理是专门的、无状态的代理，您的主代理可以生成它们来自主处理复杂任务。您的代理可以在单个对话中做所有事情，而是将工作委托给专注的子代理，它们独立运行并返回结果。</p>
+
+                    <p>Letta Code 支持五种子代理类型：</p>
+                    <ul>
+                        <li><a href="#explore">explore</a> — 快速代码库搜索（只读）</li>
+                        <li><a href="#general-purpose">general-purpose</a> — 完整实现（可以编辑文件）</li>
+                        <li><a href="#memory">memory</a> — 清理和重组记忆块</li>
+                        <li><a href="#plan">plan</a> — 分解复杂任务（只读）</li>
+                        <li><a href="#recall">recall</a> — 搜索对话历史（只读）</li>
+                    </ul>
+
+                    <h2 id="how-it-works">工作原理</h2>
+                    <p>当您的主代理遇到复杂任务时，它可以使用 <code>Task</code> 工具启动子代理：</p>
+                    <pre><code>Task(
+    subagent_type="explore",
+    description="Find auth code",
+    prompt="Search for all authentication-related files in src/. List paths and summarize the approach."
+)</code></pre>
+
+                    <p>子代理使用自己的系统提示、工具和模型自主运行。完成时返回单个最终报告。您的主代理接收结果并继续。</p>
+
+                    <p>关键特性：</p>
+                    <ul>
+                        <li><strong>无状态</strong>：每次调用都是独立的——调用之间没有记忆持久化</li>
+                        <li><strong>自主</strong>：子代理不能在执行过程中提问；所有上下文必须预先提供</li>
+                        <li><strong>上下文感知</strong>：子代理看到完整的对话历史，所以它们理解之前发生的事情</li>
+                        <li><strong>并行</strong>：可以同时启动多个子代理处理独立任务</li>
+                        <li><strong>后台</strong>：任务可以使用 <code>run_in_background</code> 在后台运行，完成时通知您</li>
+                    </ul>
+
+                    <h2 id="built-in-subagents">内置子代理</h2>
+                    <p>Letta Code 包含五个为常见工作流程优化的内置子代理。</p>
+
+                    <h3 id="explore">explore</h3>
+                    <p>一个快速、轻量级的代理，用于搜索和理解代码库。它可以查找文件、搜索模式并探索项目结构——但不能进行更改。</p>
+
+                    <p>使用快速模型（Haiku）保持搜索快速且便宜。当您的代理需要在处理代码之前定位代码时，通常会生成 explore 子代理。</p>
+
+                    <p><strong>示例提示：</strong></p>
+                    <pre><code>> Use an explore agent to find all database models
+> Spawn an explore subagent to locate error handling code
+> Have an explore agent map out the authentication flow</code></pre>
+
+                    <h3 id="general-purpose">general-purpose</h3>
+                    <p>一个全功能代理，可以研究、规划和实现。它可以访问所有工具，包括文件编辑，因此它可以实际更改您的代码库。</p>
+
+                    <p>使用平衡的模型（Sonnet）以合理的成本获得良好的推理能力。当您的代理需要实现实质性内容时，会委托到这里。</p>
+
+                    <p><strong>示例提示：</strong></p>
+                    <pre><code>> Use a general-purpose agent to implement the password reset feature
+> Spawn a general-purpose subagent to refactor the logging system
+> Have a general-purpose agent add tests for the user module</code></pre>
+
+                    <h3 id="memory">memory</h3>
+                    <p>一个记忆管理代理，清理和重组您代理的记忆块。它移除冗余、添加结构、解决矛盾并提高可扫描性。与 <code>defragmenting-memory</code> 技能配合使用进行备份/恢复工作流程。</p>
+
+                    <p>使用高推理模型（Opus），因为记忆重组需要仔细判断保留、合并或删除什么。以提升的权限运行以直接编辑记忆文件。</p>
+
+                    <p><strong>示例提示：</strong></p>
+                    <pre><code>> Use a memory agent to clean up and reorganize my memory blocks
+> Spawn a memory subagent to remove redundancy from the project block
+> Have a memory agent restructure and consolidate my persona block</code></pre>
+
+                    <h3 id="plan">plan</h3>
+                    <p>一个规划代理，将复杂任务分解为可操作的步骤。它探索代码库并创建详细的实施路线图——但自己不进行更改。</p>
+
+                    <p>使用高推理模型（Opus）彻底思考复杂问题。期望得到详细的、结构化的输出和逐步指导。</p>
+
+                    <p><strong>示例提示：</strong></p>
+                    <pre><code>> Use a plan agent to design the user authentication system
+> Have a plan subagent break down the migration to TypeScript
+> Spawn a plan agent to architect the new notification system</code></pre>
+
+                    <h3 id="recall">recall</h3>
+                    <p>一个搜索代理，用于在对话历史中查找信息。它使用 <code>searching-messages</code> 技能定位可能已超出主代理上下文窗口的过去讨论、决策和上下文。</p>
+
+                    <p>使用高推理模型（Opus）进行对话历史的彻底分析。当您的代理需要记住之前讨论的内容时，会生成 recall 子代理。</p>
+
+                    <p><strong>示例提示：</strong></p>
+                    <pre><code>> Use a recall agent to find what we discussed about the database schema
+> Have a recall subagent search for any decisions made about authentication
+> Spawn a recall agent to find when we last talked about deployment</code></pre>
+
+                    <h2 id="using-subagents">使用子代理</h2>
+                    <p>您的代理通过 <code>Task</code> 工具自动访问子代理。您不需要配置任何东西——只需描述您的任务，您的代理会决定何时委托。</p>
+
+                    <p>您也可以通过提示明确请求使用子代理：</p>
+                    <pre><code>> Use the explore subagent to find all database connection code</code></pre>
+
+                    <h3 id="overriding-model">覆盖模型</h3>
+                    <p>每种子代理类型都有默认模型，但您可以请求使用不同的模型：</p>
+                    <pre><code>> Use a plan agent with Sonnet to design the migration
+> Spawn an explore agent with Opus for a thorough codebase analysis
+> Use a general-purpose agent with Haiku for this quick fix</code></pre>
+
+                    <h3 id="limiting-turns">限制轮次</h3>
+                    <p>您可以使用 <code>max_turns</code> 参数限制子代理进行多少轮。这可以防止开放性任务上的失控代理：</p>
+                    <pre><code>Task(
+    subagent_type="general-purpose",
+    description="Quick fix",
+    prompt="Fix the typo in README.md",
+    max_turns=5
+)</code></pre>
+
+                    <h3 id="parallel-execution">并行执行</h3>
+                    <p>您可以请求多个子代理同时工作：</p>
+                    <pre><code>> Spawn two explore agents: one to search the frontend for React components,
+and another to find all API routes in the backend</code></pre>
+
+                    <h3 id="background-tasks">后台任务</h3>
+                    <p>在后台启动子代理，以便在它运行时继续工作。代理在后台任务完成时收到通知。</p>
+                    <pre><code>Task(
+    subagent_type="explore",
+    description="Find all API routes",
+    prompt="Search the entire codebase for API route definitions.",
+    run_in_background=True
+)</code></pre>
+
+                    <p>后台任务将其输出写入文件。使用 <code>TaskOutput</code> 检查任务的进度或检索其结果，使用 <code>TaskStop</code> 取消正在运行的任务。</p>
+
+                    <p><code>Bash</code> 工具也支持 <code>run_in_background</code> 用于长时间运行的 shell 命令。</p>
+
+                    <h3 id="viewing-available">查看可用子代理</h3>
+                    <p>使用 <code>/subagents</code> 命令查看所有可用的子代理（内置和自定义）：</p>
+                    <pre><code>> /subagents</code></pre>
+
+                    <h3 id="refreshing-list">刷新子代理列表</h3>
+                    <p>如果您或代理在会话期间修改了 <code>.letta/agents/</code> 中的自定义子代理，代理可以刷新其子代理列表：</p>
+                    <pre><code>> Refresh your subagents list</code></pre>
+
+                    <p>这会重新发现内置类型和 <code>.letta/agents/</code> 目录中的自定义定义中的所有子代理。重新启动 Letta Code 也会刷新子代理列表。</p>
+
+                    <h2 id="creating-custom">创建自定义子代理</h2>
+                    <p>通过将带有 YAML 前置内容的 Markdown 文件添加到 <code>.letta/agents/</code> 目录来创建自定义子代理。</p>
+
+                    <h3 id="file-structure">文件结构</h3>
+                    <pre><code>.letta/
+└── agents/
+    └── my-subagent.md</code></pre>
+
+                    <p>您也可以在 <code>~/.letta/agents/</code> 创建跨所有项目可用的全局子代理。</p>
+
+                    <h3 id="file-format">子代理文件格式</h3>
+                    <pre><code>---
+name: security-reviewer
+description: Reviews code for security vulnerabilities and suggests fixes
+tools: Glob, Grep, Read
+model: sonnet-4.5
+memoryBlocks: human, persona
+---
+
+You are a security code reviewer.
+
+## Instructions
+- Search for common vulnerability patterns (SQL injection, XSS, etc.)
+- Check authentication and authorization code
+- Review input validation
+- Identify hardcoded secrets or credentials
+
+## Output Format
+1. List of findings with severity (critical/high/medium/low)
+2. File paths and line numbers for each issue
+3. Recommended fixes</code></pre>
+
+                    <h3 id="frontmatter-fields">前置内容字段</h3>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>字段</th>
+                                    <th>必需</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>name</code></td><td>是</td><td>唯一标识符（小写，允许连字符）。必须以字母开头。</td></tr>
+                                <tr><td><code>description</code></td><td>是</td><td>何时使用此子代理（显示在 Task 工具和 /subagents 中）</td></tr>
+                                <tr><td><code>tools</code></td><td>否</td><td>允许的工具列表（逗号分隔），或 <code>all</code>。默认为 <code>all</code>。</td></tr>
+                                <tr><td><code>model</code></td><td>否</td><td>使用的模型（例如 <code>haiku</code>、<code>sonnet-4.5</code>、<code>opus</code>）。默认从主代理继承。</td></tr>
+                                <tr><td><code>memoryBlocks</code></td><td>否</td><td>子代理可以访问哪些记忆块：特定列表、<code>all</code> 或 <code>none</code>。默认为 <code>all</code>。</td></tr>
+                                <tr><td><code>skills</code></td><td>否</td><td>自动加载的技能列表（逗号分隔）</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="system-prompt">系统提示</h3>
+                    <p>Markdown 文件的正文（前置内容之后）成为子代理的系统提示。为子代理应该做什么以及如何格式化输出编写清晰的指令。</p>
+
+                    <h3 id="override-priority">覆盖优先级</h3>
+                    <p>自定义子代理覆盖同名的内置代理。项目级子代理（<code>.letta/agents/</code>）覆盖全局代理（<code>~/.letta/agents/</code>）。</p>
+
+                    <h3 id="using-custom">使用自定义子代理</h3>
+                    <p>定义后，用自然语言请求您的自定义子代理：</p>
+                    <pre><code>> Use the security-reviewer agent to review the authentication module
+> Run security-reviewer on the entire src/api directory</code></pre>
+
+                    <h2 id="when-to-use">何时使用子代理</h2>
+                    <p><strong>好的用例：</strong></p>
+                    <ul>
+                        <li><strong>大型代码库搜索</strong>："查找我们处理用户认证的所有地方"</li>
+                        <li><strong>实现前规划</strong>："设计迁移到新数据库的方法"</li>
+                        <li><strong>并行调查</strong>："同时检查前端和后端的 API 端点"</li>
+                        <li><strong>独立实现</strong>："为支付处理模块添加日志"</li>
+                    </ul>
+
+                    <p><strong>何时不要使用子代理：</strong></p>
+                    <ul>
+                        <li><strong>需要澄清</strong>：如果您不确定想要什么，先与主代理交互</li>
+                        <li><strong>简单、快速的任务</strong>："读取配置文件"不需要子代理</li>
+                        <li><strong>需要逐步指导</strong>：如果您想审查每个更改，让主代理保持控制</li>
+                    </ul>
+
+                    <h2 id="tips">技巧</h2>
+                    <ul>
+                        <li><strong>预先具体化</strong>：子代理不能提出后续问题。不要说"探索认证代码"，尝试"查找所有认证相关的文件并总结认证流程"</li>
+                        <li><strong>请求特定输出</strong>：告诉子代理您想要什么返回。"列出所有 API 端点及其 HTTP 方法和路径"比"查找 API 端点"更清晰</li>
+                        <li><strong>为您的工作流程创建自定义子代理</strong>：如果您经常进行安全审查、迁移或其他专门任务，创建一个自定义子代理</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

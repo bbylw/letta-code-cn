@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 概述 - 有记忆能力的编程代理，在终端中运行">
+    <title>Letta Code 概述 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                        </svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>Letta Code 概述</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        有记忆能力的编程代理，在您的终端中运行
+                    </p>
+
+                    <p>Letta Code 是一个深度个性化的有状态代理，它运行在您的本地计算机上，可以从经验中学习并随使用不断改进。</p>
+
+                    <p>与 Claude Code 不同，Letta Code 是<a href="https://github.com/letta-ai/letta" target="_blank">开源</a>的、模型无关的（可以使用 Claude、GPT、Gemini 或任何您想要的模型），最重要的是，它是<strong>有状态的</strong>，这意味着您可以在多个编程会话中使用同一个代理，让它随时间学习和改进。</p>
+
+                    <h2 id="quickstart">30 秒快速开始</h2>
+                    <p>要安装 Letta Code，请使用 <code>npm</code>（需要 <a href="https://nodejs.org/" target="_blank">Node.js</a> 18+ 版本）：</p>
+                    <pre><code>npm install -g @letta-ai/letta-code</code></pre>
+
+                    <p>然后导航到您的项目并运行 <code>letta</code> 来启动 Letta Code：</p>
+                    <pre><code>cd your-project
+letta</code></pre>
+
+                    <p>首次使用时，系统会提示您登录。按照说明使用您的 Letta 账户进行身份验证，然后返回终端。</p>
+
+                    <p>👾 <strong>Beep boop</strong> - 您已准备好开始聊天！</p>
+
+                    <p>要了解如何初始化代理的记忆以及配置不同的 LLM 提供商，<a href="quickstart.html">请继续阅读快速开始指南 →</a></p>
+
+                    <h2 id="philosophy">理念：有状态代理</h2>
+                    <p>Letta Code 围绕长期存在的代理构建，这些代理在会话之间持久存在并随使用改进。每个会话都绑定到一个持久化的代理，而不是在独立的会话中工作。</p>
+
+                    <div class="grid md:grid-cols-2 gap-6 my-8">
+                        <div class="bg-slate-50 dark:bg-slate-800 rounded-xl p-6">
+                            <h3 class="text-lg font-semibold mb-4 text-slate-700 dark:text-slate-200">Claude Code / Codex / Gemini CLI（基于会话）</h3>
+                            <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                                <li>• 会话是独立的</li>
+                                <li>• 会话之间没有学习</li>
+                                <li>• 上下文 = 当前会话中的消息 + AGENTS.md</li>
+                                <li>• 关系：每次对话就像认识一个新的承包商</li>
+                            </ul>
+                        </div>
+                        <div class="bg-indigo-50 dark:bg-indigo-900/30 rounded-xl p-6 border-2 border-indigo-200 dark:border-indigo-700">
+                            <h3 class="text-lg font-semibold mb-4 text-indigo-700 dark:text-indigo-300">Letta Code（基于代理）</h3>
+                            <ul class="space-y-2 text-indigo-600 dark:text-indigo-400">
+                                <li>• 跨会话使用同一个代理</li>
+                                <li>• 持久记忆和随时间学习</li>
+                                <li>• <code>/clear</code> 和 <code>/new</code> 开始新会话（或"线程"或"对话"），但记忆持久存在</li>
+                                <li>• 关系：就像有一个会学习和记住的同事或徒弟</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 id="capabilities">Letta Code 能做什么？</h2>
+
+                    <div class="space-y-6 my-8">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg">在本地计算机上工作</h3>
+                                <p class="text-slate-600 dark:text-slate-400">Letta Code 运行在您的终端中，可以在您的计算机上做任何您能做的事情！让 Letta Code 编写代码、编辑和组织文件、运行程序等等。Letta Code 做得越多，它学到的就越多。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg">记住所有先前的交互</h3>
+                                <p class="text-slate-600 dark:text-slate-400">您的代理在会话之间持久存在。它记得您的代码库、偏好和过去的交互。记忆和消息被持久化，可以通过工具、技能和子代理进行搜索。</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900/50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-lg">自我改进和演化</h3>
+                                <p class="text-slate-600 dark:text-slate-400">您可以深度自定义代理的个性和记忆系统，通过直接编辑其记忆块，或让代理修改自己。运行 <code>/init</code> 来引导项目知识，使用 <code>/remember</code> 来保存重要的上下文。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 id="learn-more">了解更多</h2>
+                    <div class="grid sm:grid-cols-2 gap-4 my-8">
+                        <a href="quickstart.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">快速开始 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">设置您的代理并学习基础知识</p>
+                        </a>
+                        <a href="memory.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">记忆系统 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">了解分层记忆系统</p>
+                        </a>
+                        <a href="models.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">模型配置 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">切换模型和配置工具集</p>
+                        </a>
+                        <a href="skills.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">技能系统 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">创建您的代理可以学习的可复用技能</p>
+                        </a>
+                        <a href="subagents.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">子代理 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">将任务委托给专门的代理</p>
+                        </a>
+                        <a href="cli-reference.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">CLI 参考 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">命令行选项和标志</p>
+                        </a>
+                        <a href="headless.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">无头模式 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">在脚本和 CI 中非交互式运行</p>
+                        </a>
+                    </div>
+
+                    <h2 id="resources">其他资源</h2>
+                    <ul class="space-y-2">
+                        <li><a href="../guides/docker.html">Docker</a> — 将 Letta Code 连接到在 Docker 中运行的 Letta 服务器</li>
+                        <li><a href="https://github.com/letta-ai/letta" target="_blank">GitHub</a> — 源代码和问题跟踪</li>
+                        <li><a href="https://discord.gg/letta" target="_blank">Discord</a> — Discord 社区和支持频道</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 快速开始 - 学习基础知识">
+    <title>快速开始 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>快速开始</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        学习 Letta Code 的基础知识
+                    </p>
+
+                    <p>完成本快速开始指南后，您将知道如何使用 Letta Code 代理完成实际任务，以及如何教导您的代理并帮助它随时间学习。</p>
+
+                    <h2 id="before-you-begin">开始之前</h2>
+                    <p>要使用 Letta Code，您需要一台准备好以下内容的计算机：</p>
+                    <ul>
+                        <li>终端应用程序（例如 MacOS 上的 <a href="https://iterm2.com/" target="_blank">iTerm2</a>）</li>
+                        <li><a href="https://nodejs.org/" target="_blank">Node.js</a> 18+ 版本已安装</li>
+                    </ul>
+
+                    <h2 id="step-1">步骤 1：安装 Letta Code</h2>
+                    <p>安装 Node.js 后，您的系统上应该有 <code>npm</code> 可用。在终端中运行以下命令来安装 Letta Code：</p>
+                    <pre><code>npm install -g @letta-ai/letta-code</code></pre>
+
+                    <h2 id="step-2">步骤 2：登录您的（免费）账户</h2>
+                    <p>首次使用 <code>letta</code> 启动 Letta Code 时，系统会提示您登录：</p>
+                    <pre><code>letta
+# 您会看到一条消息说 "Let's get you authenticated"
+# 按 "enter" 打开浏览器窗口</code></pre>
+
+                    <p>按照说明登录现有的 Letta Platform 账户，或创建一个新账户。您的凭据会被存储，您只需要登录一次。如果需要稍后清除凭据，在 Letta Code 中运行 <code>/logout</code>。</p>
+
+                    <p>如果您正在使用 Docker 部署自己的 Letta 服务器，请在运行 <code>letta</code> 之前在环境中设置 <code>LETTA_BASE_URL</code>，它将在启动时直接连接到服务器。</p>
+
+                    <h2 id="step-3">步骤 3：认识您的代理 🤖</h2>
+                    <p>首次启动时，Letta Code 会为您创建一个名为 "Memo" 的入门代理 - 一个具有空白状态的有状态代理。您使用 Memo 越多，它学到的就越多。</p>
+
+                    <p>Memo 是您的！您可以使用 <code>/pin</code> 重命名 Memo，并通过告诉它编辑记忆来自定义其个性，或者在 ADE 中直接编辑（运行 <code>/ade</code>）。</p>
+
+                    <p>尝试以下提示之一来感受代理的能力：</p>
+                    <pre><code>> /init</code></pre>
+                    <p>运行 <code>/init</code> 让代理分析您的代码库并了解您的项目。</p>
+
+                    <pre><code>> What do you know about me so far?</code></pre>
+                    <p>询问代理它对您的了解程度。</p>
+
+                    <pre><code>> Create a user profile on my by looking at my downloads folder</code></pre>
+                    <p>让代理通过查看您的下载文件夹来创建用户画像。</p>
+
+                    <pre><code>> What active projects am I working on? Which one do you think you could help with?</code></pre>
+                    <p>询问您正在进行的活跃项目，以及代理认为可以帮助哪个。</p>
+
+                    <pre><code>> Re-tool your memory to be just like the AI from the movie Her, operate as my AI OS companion</code></pre>
+                    <p>让代理重新配置记忆，像电影《Her》中的 AI 一样运作。</p>
+
+                    <pre><code>> /remember that I always use bun in my node projects, never npm</code></pre>
+                    <p>教导代理记住您的偏好。</p>
+
+                    <p>如果您是现有的 Letta 用户，也可以运行 <code>/agents</code> 来切换到您现有的代理之一。</p>
+
+                    <h2 id="step-4">步骤 4：升级代理的大脑（LLM）</h2>
+                    <p>Letta Code 是开源且免费使用的。为了充分利用 Letta Code，我们建议通过 Letta API 使用前沿模型，如 Claude Sonnet/Opus 4.5 或 GPT-5.2-Codex，或连接您自己的 LLM API 密钥：</p>
+
+                    <ul>
+                        <li><strong>自带密钥（BYOK）</strong>：Letta Code 支持通过 Anthropic、OpenAI 等进行标准 API 密钥认证，以及 zAI + ChatGPT (Codex) 编程计划。使用 <code>/connect</code> 进行配置。</li>
+                        <li><strong>Letta API</strong>：提供对所有主要模型提供商（Anthropic、OpenAI、Google Gemini、zAI、DeepSeek 等）的直接访问。注册 <a href="https://letta.com/pricing" target="_blank">Letta Pro 或 Max Plan</a> 以使用。</li>
+                    </ul>
+
+                    <p>您可以随时使用 <code>/model</code> 切换代理的模型：</p>
+                    <pre><code>> /model</code></pre>
+
+                    <h2 id="step-5">步骤 5：教导和训练您的代理</h2>
+                    <p>您使用代理的次数越多，它就变得越有价值。为了充分利用您的 Letta Code 代理，鼓励它在相关时更新记忆并搜索过去的历史：</p>
+
+                    <ul>
+                        <li><strong>在相关时回忆过去的交互</strong>：您的代理可以完全访问所有先前的对话数据，可以通过工具、<a href="skills.html">技能</a>和<a href="subagents.html">子代理</a>访问。如果您之前讨论过某些内容，您的代理可以找到它（例如，"我们之前肯定修复过一个类似的 bug，你还记得上次是什么解决方案吗？"）</li>
+                        <li><strong>使用 <code>/remember</code> 纠正您的代理</strong>：当您的代理犯了一个不应该再犯的错误时，使用 <code>/remember</code> 命令来教导它（例如，<code>/remember to never do that again</code>）</li>
+                    </ul>
+
+                    <p>每次运行 <code>letta</code> 时，Letta Code 会恢复与您上次使用的代理的默认对话（默认情况下是 Memo）。这让您可以准确从上次离开的地方继续。</p>
+
+                    <p><strong>多线程</strong>：如果您想运行并行对话（例如，一个重构您的 API，另一个编写测试），使用 <code>letta --new</code> 创建新对话。所有对话共享相同的代理记忆和可搜索的消息历史。使用 <code>/resume</code> 切换对话（默认对话始终固定在顶部）。</p>
+
+                    <h2 id="essential-commands">常用命令</h2>
+                    <p>使用 Letta Code 时，您可能经常使用以下常用命令：</p>
+
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>命令</th>
+                                    <th>功能</th>
+                                    <th>示例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>letta</code></td><td>启动交互模式</td><td><code>letta</code></td></tr>
+                                <tr><td><code>letta -p "query"</code></td><td>在无头模式下运行查询</td><td><code>letta -p "commit the changes and push"</code></td></tr>
+                                <tr><td><code>shift-tab</code></td><td>在模式之间切换（允许编辑、计划、yolo）</td><td>按 <code>Shift+Tab</code></td></tr>
+                                <tr><td><code>/init</code></td><td>初始化代理的记忆</td><td><code>> /init</code></td></tr>
+                                <tr><td><code>/remember</code></td><td>教导代理某些内容</td><td><code>> /remember always use pnpm</code></td></tr>
+                                <tr><td><code>/memory</code></td><td>查看和管理记忆块</td><td><code>> /memory</code></td></tr>
+                                <tr><td><code>/model</code></td><td>切换 LLM 模型</td><td><code>> /model</code></td></tr>
+                                <tr><td><code>/search</code></td><td>搜索过去的消息</td><td><code>> /search auth bug</code></td></tr>
+                                <tr><td><code>/clear</code></td><td>清除上下文窗口（消息缓冲区）</td><td><code>> /clear</code></td></tr>
+                                <tr><td><code>/new</code></td><td>开始新对话</td><td><code>> /new</code></td></tr>
+                                <tr><td><code>/pin</code></td><td>固定代理以便快速访问</td><td><code>> /pin</code></td></tr>
+                                <tr><td><code>/agents</code></td><td>在代理之间切换</td><td><code>> /agents</code></td></tr>
+                                <tr><td><code>/feedback</code></td><td>报告问题或提供反馈</td><td><code>> /feedback</code></td></tr>
+                                <tr><td><code>!</code></td><td>进入 bash 模式直接运行 bash 命令</td><td><code>! git status</code></td></tr>
+                                <tr><td><code>exit</code> 或 <code>Ctrl+C</code></td><td>退出 Letta Code</td><td><code>> exit</code></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <p>阅读更多关于 Letta Code 丰富功能集的内容：</p>
+                    <ul>
+                        <li><a href="headless.html">无头模式</a> - 非交互式运行 Letta Code</li>
+                        <li><a href="subagents.html">子代理</a> - Letta Code 可以生成其他（子）代理</li>
+                        <li><a href="memory.html">记忆系统</a> - 了解分层记忆系统</li>
+                        <li><a href="skills.html">技能系统</a> - 创建可复用模块来扩展您的代理</li>
+                    </ul>
+
+                    <h2 id="getting-help">获取帮助</h2>
+                    <ul>
+                        <li><strong>询问 Letta Code</strong>：Letta Code 能够浏览网页，包括这些文档！</li>
+                        <li><strong>加入我们的 Discord</strong>：获取帮助的最佳方式是加入我们的 <a href="https://discord.gg/letta" target="_blank">Discord 服务器</a>，与 Letta 团队的其他社区成员和开发者聊天。</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

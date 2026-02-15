@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 无头模式 - 非交互式运行用于脚本和自动化">
+    <title>无头模式 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>无头模式</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        非交互式运行 Letta Code，用于脚本和自动化
+                    </p>
+
+                    <p>无头模式允许您非交互式运行 Letta Code，使其易于集成到脚本、CI/CD 管道或与其他 UNIX 工具组合使用。</p>
+
+                    <h2 id="basic-usage">基本用法</h2>
+                    <p>使用 <code>-p</code> 标志直接传递提示：</p>
+                    <pre><code>letta -p "Look around this repo and write a README.md documenting it"</code></pre>
+
+                    <p>您也可以通过管道输入 Letta Code：</p>
+                    <pre><code>echo "Explain this error" | letta -p</code></pre>
+
+                    <h2 id="output-formats">输出格式</h2>
+                    <p>Letta Code 在无头模式下支持三种输出格式：</p>
+
+                    <h3 id="text">文本（默认）</h3>
+                    <p>以纯文本返回代理的响应：</p>
+                    <pre><code>letta -p "What files are in this directory?"</code></pre>
+
+                    <h3 id="json">JSON</h3>
+                    <p>返回带有元数据的结构化 JSON 响应：</p>
+                    <pre><code>letta -p "List all TypeScript files" --output-format json</code></pre>
+
+                    <p>示例输出：</p>
+                    <pre><code>{
+  "type": "result",
+  "result": "Found 15 TypeScript files...",
+  "agent_id": "agent-abc123",
+  "usage": {
+    "prompt_tokens": 1250,
+    "completion_tokens": 89
+  }
+}</code></pre>
+
+                    <h3 id="stream-json">流式 JSON</h3>
+                    <p>返回行分隔的 JSON 事件以进行实时流式传输。这对于防止超时和获取增量进度很有用：</p>
+                    <pre><code>letta -p "Explain this codebase" --output-format stream-json</code></pre>
+
+                    <p>每行是一个 JSON 事件：</p>
+                    <pre><code>{"type":"system","subtype":"init","agent_id":"agent-...","session_id":"agent-...","model":"claude-sonnet-4-5","tools":[...]}
+{"type":"message","message_type":"reasoning_message","reasoning":"The user is asking...","otid":"...","seq_id":1}
+{"type":"message","message_type":"assistant_message","content":"Here's an overview...","otid":"...","seq_id":5}
+{"type":"message","message_type":"stop_reason","stop_reason":"end_turn"}
+{"type":"message","message_type":"usage_statistics","prompt_tokens":294,"completion_tokens":97}
+{"type":"result","subtype":"success","result":"Here's an overview...","agent_id":"...","session_id":"...","uuid":"..."}</code></pre>
+
+                    <p>消息在 token 级别流式传输——每个块具有相同的 <code>otid</code>（输出轮次 ID）和递增的 <code>seq_id</code>。</p>
+
+                    <h2 id="bidirectional">双向模式</h2>
+                    <p>对于程序化控制，使用 <code>--input-format stream-json</code> 启用通过 stdin/stdout 的双向 JSON 通信。这允许外部程序以结构化格式发送消息和接收响应。</p>
+                    <pre><code>letta -p --input-format stream-json --output-format stream-json</code></pre>
+
+                    <h3 id="input-messages">输入消息类型</h3>
+                    <p>向 stdin 发送 JSON 消息（每行一个）：</p>
+
+                    <p>用户消息：</p>
+                    <pre><code>{"type":"user","message": {"role":"user","content":"What files are here?"}}</code></pre>
+
+                    <p>初始化控制请求：</p>
+                    <pre><code>{"type":"control_request","request_id":"init_1","request": {"subtype":"initialize"}}</code></pre>
+
+                    <p>中断控制请求：</p>
+                    <pre><code>{"type":"control_request","request_id":"int_1","request": {"subtype":"interrupt"}}</code></pre>
+
+                    <h3 id="output-messages">输出消息类型</h3>
+                    <p>CLI 向 stdout 发出 JSON 消息：</p>
+
+                    <p>初始化事件（会话开始时发出）：</p>
+                    <pre><code>{"type":"system","subtype":"init","agent_id":"agent-xxx","session_id":"agent-xxx","model":"...","tools": [...]}</code></pre>
+
+                    <p>控制响应：</p>
+                    <pre><code>{"type":"control_response","response": {"subtype":"success","request_id":"init_1","response": {...}}}</code></pre>
+
+                    <p>流式消息：</p>
+                    <pre><code>{"type":"message","message_type":"assistant_message","content":"Hello!","session_id":"...","uuid":"..."}</code></pre>
+
+                    <p>结果（每轮后发出）：</p>
+                    <pre><code>{"type":"result","subtype":"success","result":"Hello!","session_id":"...","agent_id":"..."}</code></pre>
+
+                    <h3 id="multi-turn">多轮对话</h3>
+                    <p>进程保持活动直到 stdin 关闭，允许多轮对话：</p>
+                    <pre><code>(
+  echo '{"type": "user", "message": {"role": "user", "content": "Remember: secret is BANANA"}}'
+  sleep 5
+  echo '{"type": "user", "message": {"role": "user", "content": "What was the secret?"}}'
+) | letta -p --input-format stream-json --output-format stream-json</code></pre>
+
+                    <h3 id="token-streaming">Token 级流式传输</h3>
+                    <p>添加 <code>--include-partial-messages</code> 以接收 token 级流式事件：</p>
+                    <pre><code>letta -p --input-format stream-json --output-format stream-json --include-partial-messages</code></pre>
+
+                    <p>这会将每个块包装在 <code>stream_event</code> 中：</p>
+                    <pre><code>{"type":"stream_event","event": {"message_type":"assistant_message","content":"Hel"},"session_id":"...","uuid":"..."}</code></pre>
+
+                    <h2 id="agent-selection">代理选择</h2>
+                    <p>默认情况下，无头模式使用当前目录的上次代理并创建新对话（就像交互模式一样）。您的代理在运行之间保持记忆，但每次运行都以新的消息历史开始。</p>
+
+                    <p>创建新代理：</p>
+                    <pre><code>letta -p "..." --new</code></pre>
+
+                    <p>使用特定代理：</p>
+                    <pre><code>letta -p "..." --agent &lt;agent-id&gt;</code></pre>
+
+                    <h2 id="model-selection">模型选择</h2>
+                    <p>为无头运行指定模型：</p>
+                    <pre><code>letta -p "..." --model sonnet-4.5
+letta -p "..." -m gpt-5-codex
+letta -p "..." -m haiku</code></pre>
+
+                    <p>有关支持的模型 ID 完整列表，请参阅 <a href="models.html">模型</a>。</p>
+
+                    <h2 id="permissions">权限控制</h2>
+
+                    <h3 id="auto-allow">自动允许所有工具</h3>
+                    <p>使用 <code>--yolo</code> 绕过所有权限提示（谨慎使用）：</p>
+                    <pre><code>letta -p "Refactor this file" --yolo</code></pre>
+
+                    <h3 id="restrict-tools">限制可用工具</h3>
+                    <p><code>--tools</code> 标志控制将哪些工具<strong>附加</strong>到代理（将它们从上下文窗口中完全移除）：</p>
+                    <pre><code>letta -p "Analyze this codebase" --tools "Read,Glob,Grep"</code></pre>
+
+                    <p>无工具（仅对话）：</p>
+                    <pre><code>letta -p "What do you think about this approach?" --tools ""</code></pre>
+
+                    <p>这与 <code>--allowedTools</code>/<code>--disallowedTools</code> 不同，后者控制权限但保留上下文中的工具。有关更多详细信息，请参阅 <a href="configuration.html#permissions">权限</a>。</p>
+
+                    <h3 id="permission-modes">权限模式</h3>
+                    <p>自动允许仅编辑：</p>
+                    <pre><code>letta -p "Fix the type errors" --permission-mode acceptEdits</code></pre>
+
+                    <p>只读模式：</p>
+                    <pre><code>letta -p "Review this PR" --permission-mode plan</code></pre>
+
+                    <h2 id="advanced">高级选项</h2>
+
+                    <h3 id="resume-by-name">按名称恢复</h3>
+                    <p>使用 <code>-n</code> 或 <code>--name</code> 按名称恢复代理（不区分大小写）。匹配固定代理或最近代理：</p>
+                    <pre><code>letta -p "Continue where we left off" --name myproject</code></pre>
+
+                    <h3 id="system-prompt">系统提示配置</h3>
+                    <p>创建新代理时自定义代理的系统提示：</p>
+
+                    <p>使用预设：</p>
+                    <pre><code>letta -p "..." --new --system letta-claude</code></pre>
+
+                    <p>使用自定义提示：</p>
+                    <pre><code>letta -p "..." --new --system-custom "You are a Python expert who writes clean code."</code></pre>
+
+                    <p>使用附加指令扩展预设：</p>
+                    <pre><code>letta -p "..." --new --system letta-claude --system-append "Always respond in Spanish."</code></pre>
+
+                    <p><strong>可用预设：</strong></p>
+                    <ul>
+                        <li><code>default</code>/<code>letta-claude</code> - 完整 Letta Code 提示（Claude 优化）</li>
+                        <li><code>letta-codex</code> - 完整 Letta Code 提示（Codex 优化）</li>
+                        <li><code>letta-gemini</code> - 完整 Letta Code 提示（Gemini 优化）</li>
+                        <li><code>claude</code> - 基础 Claude（无技能/记忆指令）</li>
+                        <li><code>codex</code> - 基础 Codex</li>
+                        <li><code>gemini</code> - 基础 Gemini</li>
+                    </ul>
+
+                    <h3 id="memory-config">记忆块配置</h3>
+                    <p>自定义代理使用哪些记忆块：</p>
+
+                    <p>指定要包含的预设块：</p>
+                    <pre><code>letta -p "..." --new --init-blocks "persona,project"</code></pre>
+
+                    <p>设置预设块的值：</p>
+                    <pre><code>letta -p "..." --new --init-blocks "persona,project" \
+  --block-value persona="You are a Go expert" \
+  --block-value project="CLI tool for Docker"</code></pre>
+
+                    <p>使用完全自定义的记忆块（JSON）：</p>
+                    <pre><code>letta -p "..." --new --memory-blocks '[
+  {"label": "context", "value": "API documentation for Acme Corp..."},
+  {"label": "rules", "value": "Always use TypeScript"}
+]'</code></pre>
+
+                    <p>无可选块（仅核心技能块）：</p>
+                    <pre><code>letta -p "..." --new --init-blocks ""</code></pre>
+
+                    <p><strong>可用预设块：</strong></p>
+                    <ul>
+                        <li><code>persona</code> - 代理的个性和行为</li>
+                        <li><code>human</code> - 关于用户的信息</li>
+                        <li><code>project</code> - 当前项目上下文</li>
+                    </ul>
+
+                    <p><strong>核心块（始终包含）：</strong></p>
+                    <ul>
+                        <li><code>skills</code> - 可用技能目录</li>
+                        <li><code>loaded_skills</code> - 当前加载的技能指令</li>
+                    </ul>
+
+                    <h3 id="toolset-override">工具集覆盖</h3>
+                    <p>强制使用特定工具集而不是基于模型的自动检测：</p>
+                    <pre><code>letta -p "..." --toolset codex    # Codex 风格工具
+letta -p "..." --toolset gemini   # Gemini 风格工具
+letta -p "..." --toolset default  # 默认 Letta 工具</code></pre>
+
+                    <h2 id="examples">示例</h2>
+
+                    <h3 id="automated-tasks">自动化任务</h3>
+                    <p>运行 lint 并修复错误：</p>
+                    <pre><code>letta -p "Run the linter and fix any errors" --yolo</code></pre>
+
+                    <h3 id="structured-output">用于脚本的结构化输出</h3>
+                    <p>使用 JSON 输出以编程方式解析结果：</p>
+                    <pre><code>result=$(letta -p "What is the main entry point of this project?" --output-format json)
+echo $result | jq '.result'</code></pre>
+
+                    <h3 id="read-only">只读分析</h3>
+                    <p>使用 <code>--tools</code> 将代理限制为只读操作：</p>
+                    <pre><code>letta -p "Review this codebase for potential security issues" --tools "Read,Glob,Grep"</code></pre>
+
+                    <h3 id="scheduled-tasks">使用 cron 的计划任务</h3>
+                    <p>使用 cron 按计划运行 Letta Code：</p>
+
+                    <p>每天早上 9 点进行代码审查：</p>
+                    <pre><code>0 9 * * * cd /path/to/project && letta -p "Review recent changes and summarize any issues" --tools "Read,Glob,Grep" --output-format json >> /var/log/letta-review.log 2>&1</code></pre>
+
+                    <p>每周依赖检查：</p>
+                    <pre><code>0 10 * * 1 cd /path/to/project && letta -p "Check for outdated dependencies and security vulnerabilities" --yolo >> /var/log/letta-deps.log 2>&1</code></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

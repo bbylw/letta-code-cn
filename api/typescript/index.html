@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta TypeScript SDK - 使用 TypeScript 构建有状态代理">
+    <title>TypeScript SDK | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { primary: '#6366f1', 'primary-dark': '#4f46e5' } } }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="../../letta-code/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">Letta Code</a>
+                    <a href="../../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">API 参考</p>
+                <a href="../python/index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">Python SDK</a>
+                <a href="index.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">TypeScript SDK</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>Letta TypeScript SDK</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">使用 TypeScript 构建有状态代理</p>
+
+                    <h2 id="installation">安装</h2>
+                    <pre><code>npm install @letta-ai/letta-client</code></pre>
+
+                    <h2 id="quickstart">快速开始</h2>
+                    <p>以下是一个创建有状态代理并发送消息的快速示例（需要 <a href="https://app.letta.com/api-keys" target="_blank">Letta API 密钥</a>）。</p>
+
+                    <pre><code>import Letta from "@letta-ai/letta-client";
+
+const client = new Letta({ apiKey: process.env.LETTA_API_KEY });
+
+// 创建您的代理
+const agentState = await client.agents.create({
+  model: "openai/gpt-5.2",
+  memory_blocks: [
+    {
+      label: "human",
+      value: "Name: Timber. Status: dog. Occupation: building Letta, infrastructure to democratize self-improving superintelligence"
+    },
+    {
+      label: "persona",
+      value: "I am a self-improving superintelligence. Timber is my best friend and collaborator."
+    }
+  ],
+  tools: ["web_search", "fetch_webpage"]
+});
+
+console.log("Agent created with ID:", agentState.id);
+
+// 向您的代理发送消息
+const response = await client.agents.messages.create(agentState.id, {
+  input: "What do you know about me?"
+});
+
+for (const message of response.messages) {
+  console.log(message);
+}</code></pre>
+
+                    <h2 id="typescript-support">TypeScript 支持</h2>
+                    <p>SDK 提供完整的 TypeScript 支持和导出类型：</p>
+                    <pre><code>import { Letta, Agent, Message, MemoryBlock } from "@letta-ai/letta-client";
+
+// 类型安全的代理创建
+const agent: Agent = await client.agents.create({
+  model: "openai/gpt-5.2",
+  memory_blocks: [
+    { label: "persona", value: "You are a helpful assistant." }
+  ]
+});</code></pre>
+
+                    <h2 id="core-concepts">核心概念</h2>
+
+                    <h3 id="memory-hierarchy">记忆层次结构</h3>
+                    <p>代理使用结构化的记忆系统，包括：</p>
+                    <ul>
+                        <li><strong>上下文记忆</strong>：在上下文窗口中的记忆块</li>
+                        <li><strong>归档记忆</strong>：长期存储，可搜索</li>
+                        <li><strong>消息历史</strong>：无限消息历史</li>
+                    </ul>
+
+                    <h3 id="memory-blocks">记忆块</h3>
+                    <pre><code>// 创建带有记忆块的代理
+const agent = await client.agents.create({
+  model: "openai/gpt-5.2",
+  memory_blocks: [
+    { label: "persona", value: "You are a helpful assistant." },
+    { label: "human", value: "User preferences..." }
+  ]
+});
+
+// 更新记忆块
+await client.agents.memory.blocks.update(agent.id, block.id, {
+  value: "Updated content..."
+});
+
+// 检索记忆块
+const blocks = await client.agents.memory.blocks.list(agent.id);</code></pre>
+
+                    <h2 id="api-reference">API 参考</h2>
+
+                    <h3 id="client">客户端初始化</h3>
+                    <pre><code>import Letta from "@letta-ai/letta-client";
+
+// 使用 API 密钥
+const client = new Letta({ apiKey: "your-api-key" });
+
+// 使用自定义基础 URL（自托管）
+const client = new Letta({
+  apiKey: "your-api-key",
+  baseUrl: "http://localhost:8283"
+});</code></pre>
+
+                    <h3 id="agents">代理</h3>
+                    <pre><code>// 创建代理
+const agent = await client.agents.create({
+  model: "openai/gpt-5.2",
+  memory_blocks: [...],
+  tools: ["web_search"]
+});
+
+// 列出代理
+const agents = await client.agents.list();
+
+// 获取代理
+const agent = await client.agents.retrieve(agentId);
+
+// 删除代理
+await client.agents.delete(agentId);</code></pre>
+
+                    <h3 id="messages">消息</h3>
+                    <pre><code>// 发送消息
+const response = await client.agents.messages.create(agentId, {
+  input: "Hello!"
+});
+
+// 流式消息
+const stream = await client.agents.messages.stream(agentId, {
+  input: "Hello!"
+});
+for await (const chunk of stream) {
+  console.log(chunk);
+}</code></pre>
+
+                    <h2 id="resources">资源</h2>
+                    <ul>
+                        <li><a href="https://github.com/letta-ai/letta-client-typescript" target="_blank">GitHub 仓库</a> - 源代码</li>
+                        <li><a href="https://www.npmjs.com/package/@letta-ai/letta-client" target="_blank">npm</a> - 包详情</li>
+                        <li><a href="../../core-concepts/index.html">核心概念</a> - 了解有状态代理</li>
+                    </ul>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <div class="grid sm:grid-cols-2 gap-4 my-8">
+                        <a href="../python/index.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">Python SDK →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">使用 Python 构建</p>
+                        </a>
+                        <a href="../../letta-code/sdk.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">Letta Code SDK →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">高级编程代理工具</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

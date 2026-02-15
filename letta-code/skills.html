@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Code 技能系统 - 创建可复用的技能">
+    <title>技能系统 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-indigo-500 font-medium">Letta Code</a>
+                    <a href="../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 侧边栏 -->
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">开始使用</p>
+                <a href="index.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">概述</a>
+                <a href="quickstart.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">快速开始</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">功能</p>
+                <a href="memory.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">记忆系统</a>
+                <a href="models.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">模型配置</a>
+                <a href="skills.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">技能系统</a>
+                <a href="subagents.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">子代理</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">参考</p>
+                <a href="cli-reference.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">CLI 参考</a>
+                <a href="headless.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">无头模式</a>
+                <a href="configuration.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">配置</a>
+                <a href="providers.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">提供商</a>
+
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-6 mb-2">深入</p>
+                <a href="how-it-works.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">工作原理</a>
+                <a href="sdk.html" class="block px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300">SDK</a>
+            </nav>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>技能系统</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        创建和使用可复用技能来扩展代理的能力
+                    </p>
+
+                    <p>技能是您的代理加载到记忆中的知识（就像参考指南）。要将工作委托给单独的代理，请参阅<a href="subagents.html">子代理</a>。</p>
+
+                    <p>Letta Code 实现了开放的 <a href="https://github.com/anthropics/agent-skills" target="_blank">Agent Skills</a> 标准。技能可在 Cursor、Claude Code、VS Code 和其他兼容代理之间移植。</p>
+
+                    <p>技能是包含指令和资源的目录，您的代理可以在相关时加载它们。把它们想象成您的代理在处理专门任务时查阅的参考指南——API 模式、测试工作流程、部署程序。</p>
+
+                    <p>与记忆块（持久存在于代理上下文中）不同，技能由代理通过工具调用按需加载。您的代理看到有哪些技能可用，只有在处理匹配任务时才会拉取完整内容。</p>
+
+                    <h2 id="why-skills">为什么技能很重要</h2>
+                    <p>Letta Code 代理是有状态的且模型无关的。这为技能创造了独特的机会：</p>
+                    <ul>
+                        <li>团队可以通过版本控制共享技能，构建集体专业知识</li>
+                        <li>从一个编程会话中学到的技能会传递到未来的会话</li>
+                        <li>使用 Claude 的代理创建的技能可以被 GPT-5 代理稍后使用</li>
+                    </ul>
+
+                    <p>关于 <a href="https://context-bench.com" target="_blank">Context-Bench</a> 的研究表明，技能可以显著提高任务完成率。当代理从自己的经验中学习技能时，收益更大（<a href="https://letta.com/blog/skill-learning" target="_blank">Skill Learning 博客文章</a>）。</p>
+
+                    <h2 id="interoperability">互操作性</h2>
+                    <p>Letta Code 技能遵循开放的 <a href="https://github.com/anthropics/agent-skills" target="_blank">Agent Skills</a> 标准。这意味着您创建的技能可以在多个代理产品中使用：</p>
+                    <ul>
+                        <li>OpenCode、Amp、Goose 等</li>
+                        <li>OpenAI Codex - OpenAI 的编程代理</li>
+                        <li>VS Code - GitHub Copilot</li>
+                        <li>Claude Code - Anthropic 的编程代理</li>
+                        <li>Cursor - AI 代码编辑器</li>
+                    </ul>
+
+                    <p>在 Letta Code 中创建一次技能，将其提交到您的仓库，任何兼容技能的代理都可以使用它。这使技能成为捕获团队知识的可移植方式，而不会锁定到单一工具。</p>
+
+                    <h2 id="structure">结构</h2>
+                    <p>每个技能是一个包含 <code>SKILL.md</code> 文件的目录。技能可以存在于多个位置：</p>
+
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>位置</th>
+                                    <th>范围</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>.skills/</code></td>
+                                    <td>项目</td>
+                                    <td>特定于此项目的技能（版本控制）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>~/.letta/agents/{id}/skills/</code></td>
+                                    <td>代理</td>
+                                    <td>特定于一个代理的技能（个性化）</td>
+                                </tr>
+                                <tr>
+                                    <td><code>~/.letta/skills/</code></td>
+                                    <td>全局</td>
+                                    <td>在此机器上所有代理共享的技能</td>
+                                </tr>
+                                <tr>
+                                    <td>（内置）</td>
+                                    <td>内置</td>
+                                    <td>Letta Code 附带的技能</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>示例项目技能结构：</p>
+                    <pre><code>.skills/
+├── testing/
+│   └── SKILL.md
+├── api-client/
+│   ├── SKILL.md
+│   └── references/
+│       └── endpoints.md
+└── deployment/
+    ├── SKILL.md
+    └── scripts/
+        └── deploy.sh</code></pre>
+
+                    <h2 id="discovery">技能如何被发现</h2>
+                    <p>当您启动 Letta Code 时，它会扫描所有技能目录，并通过对话中的系统提醒消息将可用技能显示给代理。具有相同 ID 的技能按优先级解析——项目技能覆盖代理技能，代理技能覆盖全局，全局覆盖内置。</p>
+
+                    <p>优先级顺序（从高到低）：</p>
+                    <ol>
+                        <li>项目（<code>.skills/</code>）- 仅当前项目</li>
+                        <li>代理（<code>~/.letta/agents/{id}/skills/</code>）- 特定于此代理的技能</li>
+                        <li>全局（<code>~/.letta/skills/</code>）- 此机器上所有代理共享</li>
+                        <li>内置 - Letta Code 内置</li>
+                    </ol>
+
+                    <h2 id="creating-skills">创建技能</h2>
+
+                    <h3 id="manual-writing">手动编写</h3>
+                    <p>创建 <code>.skills/my-skill/SKILL.md</code>：</p>
+                    <pre><code>---
+name: My Skill
+description: When and why to use this skill
+---
+
+# My Skill
+
+Instructions here...</code></pre>
+
+                    <p><code>description</code> 字段需要清楚地传达技能的内容，因为它始终对代理可用。代理需要知道是否应该加载该技能。</p>
+
+                    <h3 id="learning-experience">从经验中学习</h3>
+                    <p>完成任务后，运行 <code>/skill</code> 将有效的做法提取为可复用技能：</p>
+                    <pre><code>> /skill "Database migration patterns"</code></pre>
+
+                    <p>当被要求创建技能时，代理会反思最近的消息。它会审查成功的方法、遇到的陷阱和验证策略。然后代理会编写一个捕获该知识的技能。</p>
+
+                    <p>技能学习允许代理随时间改进。详情请参阅我们的 <a href="https://letta.com/blog/skill-learning" target="_blank">Skill Learning 博客文章</a>。</p>
+
+                    <h2 id="what-goes-in-skill">技能中放什么</h2>
+                    <p>SKILL.md 文件包含基本指令、工作流程、约定和指导。好的技能是具体和可操作的：</p>
+                    <pre><code>## Git workflow
+
+Always create feature branches from main:
+git checkout main && git pull && git checkout -b feature/TICKET-123-description
+
+Run lint before committing:
+npm run lint && npm run test
+
+Commit messages follow conventional commits: feat:, fix:, docs:, etc.</code></pre>
+
+                    <h3 id="example-skill">示例：完整的技能</h3>
+                    <p>这是一个简单但完整的技能，展示了正确的结构：</p>
+                    <pre><code>---
+name: Hello World
+description: Conventions for greeting messages and welcome text. Use when writing user-facing welcome messages, onboarding copy, or greeting notifications.
+---
+
+# Hello World Conventions
+
+When writing greeting messages for this project, follow these patterns:
+
+## Welcome messages
+
+Use a friendly, concise tone:
+- "Welcome to [Product]! Let's get started."
+- "Hey [Name], good to see you!"
+
+Avoid:
+- Overly formal greetings ("Dear valued customer...")
+- Exclamation overload ("Welcome!!! So excited!!!")
+
+## Onboarding copy
+
+First-time user messages should:
+1. State what the product does in one sentence
+2. Offer a single clear next action
+3. Provide a way to get help
+
+Example:
+"[Product] helps you [value prop]. Click 'New Project' to begin, or visit our docs if you need help."</code></pre>
+
+                    <p>这个技能展示了清晰的描述编写（解释了什么和何时）、有组织的章节以及可操作的做法和注意事项。</p>
+
+                    <h2 id="bundled-resources">捆绑资源</h2>
+                    <p>技能可以包含 SKILL.md 之外的额外文件。代理只有在明确引用时才会加载这些文件，因此您可以捆绑全面的资源而不会预先消耗上下文。</p>
+                    <pre><code>.skills/api-client/
+├── SKILL.md              # 主指令（技能触发时加载）
+├── references/
+│   ├── endpoints.md      # API 端点文档
+│   ├── error-codes.md    # 错误处理参考
+│   └── schemas/
+│       └── user.json     # 数据模式
+├── scripts/
+│   ├── auth.py           # 认证辅助脚本
+│   └── validate.py       # 请求验证
+└── examples/
+    └── pagination.md     # 示例模式</code></pre>
+
+                    <p>在您的 SKILL.md 中引用这些：</p>
+                    <pre><code>## Authentication
+
+Use the auth helper script for token management:
+Run `scripts/auth.py refresh` to get a new token.
+
+For the full list of endpoints, see `references/endpoints.md`.
+For error handling patterns, see `references/error-codes.md`.</code></pre>
+
+                    <p>代理只有在需要当前任务的端点详细信息时才会读取 <code>references/endpoints.md</code>。如果只是刷新令牌，它会运行脚本而不加载参考文档。</p>
+
+                    <h3 id="types-bundled">捆绑内容的类型</h3>
+                    <ul>
+                        <li><strong>参考文档（<code>references/</code>）</strong>：代理按需查阅的详细文档——API 规范、数据库模式、配置指南。这些可以很大；只有在读取时才消耗 token。</li>
+                        <li><strong>脚本（<code>scripts/</code>）</strong>：代理直接运行的可执行代码。比让代理重新生成代码更可靠，脚本源码永远不会进入上下文——只有输出会。</li>
+                        <li><strong>示例（<code>examples/</code>）</strong>：代理可以引用或复制的示例代码、模板或模式。用于展示首选方法。</li>
+                        <li><strong>资源（<code>assets/</code>）</strong>：代理可能需要读取或复制的配置文件、模板或数据文件。</li>
+                    </ul>
+
+                    <h2 id="using-skills">使用技能</h2>
+                    <p>创建新代理时会自动发现技能。代理在系统提醒消息中看到列出的可用技能，并在相关时调用它们。您也可以使用斜杠命令语法直接调用技能：</p>
+                    <pre><code>> /commit
+> /review-pr 123</code></pre>
+
+                    <h3 id="skill-tool">Skill 工具</h3>
+                    <p>代理使用 <code>Skill</code> 工具直接调用技能。该工具接受技能名称和可选参数：</p>
+                    <pre><code>skill(skill='commit')
+skill(skill='review-pr', args='123')
+skill(skill='pdf')</code></pre>
+
+                    <p>调用时，Letta Code 读取技能的 <code>SKILL.md</code> 内容并将其作为上下文注入到对话中。技能内容被包装在与技能名称匹配的 XML 标签中（例如 <code>&lt;commit&gt;...&lt;/commit&gt;</code>），以便代理可以检测已加载的技能。</p>
+
+                    <p>技能在对话的系统提醒消息中列出。代理将用户请求与可用技能匹配并自动调用它们。您也可以使用 <code>/&lt;skill-name&gt;</code> 作为简写直接调用技能。</p>
+
+                    <h2 id="custom-location">自定义位置</h2>
+                    <p>使用不同的技能目录：</p>
+                    <pre><code>letta --skills ~/my-global-skills</code></pre>
+
+                    <h2 id="built-in-skills">内置技能</h2>
+                    <p>Letta Code 包含自动可用的内置技能：</p>
+
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>技能</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>acquiring-skills</code></td><td>从外部仓库发现和安装技能</td></tr>
+                                <tr><td><code>creating-skills</code></td><td>创建有效技能的指南</td></tr>
+                                <tr><td><code>defragmenting-memory</code></td><td>清理和重组记忆块（备份、编辑、恢复）</td></tr>
+                                <tr><td><code>finding-agents</code></td><td>在同一服务器上查找其他代理</td></tr>
+                                <tr><td><code>initializing-memory</code></td><td>初始化代理记忆的指南（由 <code>/init</code> 使用）</td></tr>
+                                <tr><td><code>messaging-agents</code></td><td>向您服务器上的其他代理发送消息</td></tr>
+                                <tr><td><code>migrating-memory</code></td><td>在代理之间迁移记忆块</td></tr>
+                                <tr><td><code>searching-messages</code></td><td>搜索过去的消息以回忆上下文</td></tr>
+                                <tr><td><code>working-in-parallel</code></td><td>与其他代理协调并行工作的指南（git worktrees）</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="tips">技巧</h2>
+                    <ul>
+                        <li>有关技能设计和研究的深入探讨，请参阅 <a href="https://context-bench.com/skills" target="_blank">Context-Bench Skills</a>。</li>
+                        <li>选择正确的范围：项目（<code>.skills/</code>）用于团队共享、仓库特定的知识；代理（<code>~/.letta/agents/{id}/skills/</code>）用于特定于一个代理的个人工作流程；全局（<code>~/.letta/skills/</code>）用于您希望在所有代理中使用的个人技能</li>
+                        <li>将 <code>.skills/</code> 加入版本控制以与团队共享。</li>
+                        <li>编写具体的指令，而不是一般性的建议。"运行 <code>npm test -- --watch</code>" 比 "确保测试您的代码" 更好。</li>
+                        <li>保持技能专注——每个技能一个领域。将大型技能拆分为较小的技能。</li>
+                    </ul>
+
+                    <h2 id="resources">资源</h2>
+                    <ul>
+                        <li><a href="https://github.com/anthropics/anthropic-cookbook/tree/main/skills" target="_blank">示例技能</a> - Anthropic 维护的技能示例</li>
+                        <li><a href="https://github.com/letta-ai/skills" target="_blank">Letta 的技能仓库</a> - 用于通用代理学习的社区技能</li>
+                        <li><a href="https://github.com/anthropics/agent-skills" target="_blank">Agent Skills 标准</a> - 可移植技能的开放规范</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

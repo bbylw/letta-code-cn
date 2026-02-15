@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta 平台 - 构建有状态 AI 代理，具备记忆能力，可以学习和自我改进">
+    <meta name="keywords" content="Letta, AI, 代理, 记忆, 有状态, LLM, 文档">
+    <title>Letta 平台 - 构建有状态 AI 代理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+
+                <!-- 导航链接 -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="letta-code/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">Letta Code</a>
+                    <a href="core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">核心概念</a>
+                    <a href="api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">API 参考</a>
+                    <a href="guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">指南</a>
+                </div>
+
+                <!-- 右侧操作 -->
+                <div class="flex items-center space-x-4">
+                    <!-- 主题切换 -->
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+                        </svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        </svg>
+                    </button>
+                    <!-- GitHub -->
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <!-- 移动端菜单 -->
+                    <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero 区域 -->
+    <section class="pt-32 pb-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+                构建具有<span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">记忆能力</span>的 AI 代理
+            </h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                Letta 是构建有状态 AI 代理的平台。您的代理可以记住过往交互、学习用户偏好，并随时间不断改进。
+            </p>
+
+            <!-- 安装命令 -->
+            <div class="max-w-xl mx-auto mb-8">
+                <div class="bg-slate-900 dark:bg-slate-800 rounded-xl p-4 flex items-center justify-between">
+                    <code class="text-green-400 text-sm sm:text-base">npm install -g @letta-ai/letta-code</code>
+                    <button class="ml-4 px-3 py-1 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white text-sm transition-colors">
+                        复制
+                    </button>
+                </div>
+            </div>
+
+            <!-- CTA 按钮 -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="letta-code/quickstart.html" class="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white font-medium transition-colors">
+                    快速开始 →
+                </a>
+                <a href="core-concepts/index.html" class="px-6 py-3 border border-slate-300 dark:border-slate-600 hover:border-indigo-500 rounded-xl font-medium transition-colors">
+                    了解核心概念
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特性区域 -->
+    <section class="py-20 px-4 bg-slate-50 dark:bg-slate-800/50">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">为什么选择 Letta？</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- 特性卡片 1 -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">有状态代理</h3>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        与传统无状态 LLM 不同，Letta 代理在会话之间保持记忆，能够从经验中学习和改进。
+                    </p>
+                </div>
+
+                <!-- 特性卡片 2 -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">分层记忆系统</h3>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        代理拥有上下文记忆、记忆块和归档记忆，智能管理上下文窗口限制。
+                    </p>
+                </div>
+
+                <!-- 特性卡片 3 -->
+                <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="w-12 h-12 bg-pink-100 dark:bg-pink-900/50 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">模型无关</h3>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        支持 Claude、GPT、Gemini 等多种模型，可随时切换，灵活配置。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品区域 -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12">Letta 产品</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Letta Code -->
+                <a href="letta-code/index.html" class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover border border-transparent hover:border-indigo-500">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-3 group-hover:text-indigo-500 transition-colors">Letta Code</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 mb-4">
+                        在终端中运行的有记忆能力的编程代理。帮助您编写代码、编辑文件、运行程序，并随时间学习您的偏好。
+                    </p>
+                    <span class="text-indigo-500 font-medium">了解更多 →</span>
+                </a>
+
+                <!-- Letta Code SDK -->
+                <a href="letta-code/sdk.html" class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover border border-transparent hover:border-purple-500">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-3 group-hover:text-purple-500 transition-colors">Letta Code SDK</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 mb-4">
+                        使用 Letta Code 作为库来构建您自己的应用程序。创建具有持久记忆的深度个性化代理。
+                    </p>
+                    <span class="text-purple-500 font-medium">了解更多 →</span>
+                </a>
+
+                <!-- Letta API -->
+                <a href="api/python/index.html" class="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg card-hover border border-transparent hover:border-pink-500">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-red-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold ml-3 group-hover:text-pink-500 transition-colors">Letta API</h3>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 mb-4">
+                        用于管理代理记忆和上下文的底层 API。提供对代理状态的精细控制。
+                    </p>
+                    <span class="text-pink-500 font-medium">了解更多 →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社区区域 -->
+    <section class="py-20 px-4 bg-slate-50 dark:bg-slate-800/50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">加入社区</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-8">与其他开发者交流，获取帮助，了解最新动态</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://discord.gg/letta" target="_blank" class="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white font-medium transition-colors flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    加入 Discord
+                </a>
+                <a href="https://twitter.com/letta_ai" target="_blank" class="px-6 py-3 border border-slate-300 dark:border-slate-600 hover:border-indigo-500 rounded-xl font-medium transition-colors flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    关注 X (Twitter)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-12 px-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <!-- Logo 和描述 -->
+                <div class="md:col-span-2">
+                    <a href="index.html" class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">L</span>
+                        </div>
+                        <span class="font-bold text-xl">Letta</span>
+                    </a>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Letta 是构建有状态 AI 代理的平台。让您的代理拥有记忆，学习并不断改进。
+                    </p>
+                </div>
+
+                <!-- 快速链接 -->
+                <div>
+                    <h4 class="font-semibold mb-4">文档</h4>
+                    <ul class="space-y-2">
+                        <li><a href="letta-code/index.html" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">Letta Code</a></li>
+                        <li><a href="core-concepts/index.html" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">核心概念</a></li>
+                        <li><a href="api/python/index.html" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">API 参考</a></li>
+                        <li><a href="guides/docker.html" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">指南</a></li>
+                    </ul>
+                </div>
+
+                <!-- 资源 -->
+                <div>
+                    <h4 class="font-semibold mb-4">资源</h4>
+                    <ul class="space-y-2">
+                        <li><a href="https://github.com/letta-ai/letta" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">GitHub</a></li>
+                        <li><a href="https://discord.gg/letta" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">Discord</a></li>
+                        <li><a href="https://twitter.com/letta_ai" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">Twitter</a></li>
+                        <li><a href="https://letta.com" target="_blank" class="text-slate-600 dark:text-slate-400 hover:text-indigo-500">官网</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700 text-center text-slate-600 dark:text-slate-400">
+                <p>© 2024 Letta. 本文档为中文翻译版，基于 Apache 2.0 许可证。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

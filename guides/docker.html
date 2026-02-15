@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta Docker 部署 - 使用 Docker 运行 Letta 服务器">
+    <title>Docker 部署 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { primary: '#6366f1', 'primary-dark': '#4f46e5' } } }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="../../letta-code/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">Letta Code</a>
+                    <a href="../../core-concepts/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">核心概念</a>
+                    <a href="../../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="index.html" class="text-indigo-500 font-medium">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <aside class="hidden lg:block w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+            <nav class="p-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">指南</p>
+                <a href="docker.html" class="block px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">Docker 部署</a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 lg:ml-64">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>Docker 部署</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">使用 Docker 运行 Letta 服务器</p>
+
+                    <p>本指南介绍如何使用 Docker 部署和运行 Letta 服务器。这使您可以完全自托管 Letta，而不依赖 Letta 云服务。</p>
+
+                    <h2 id="prerequisites">先决条件</h2>
+                    <ul>
+                        <li><a href="https://docs.docker.com/get-docker/" target="_blank">Docker</a> 已安装</li>
+                        <li><a href="https://docs.docker.com/compose/install/" target="_blank">Docker Compose</a> 已安装（可选，推荐）</li>
+                    </ul>
+
+                    <h2 id="quickstart">快速开始</h2>
+
+                    <h3 id="using-docker-compose">使用 Docker Compose（推荐）</h3>
+                    <p>创建 <code>docker-compose.yml</code> 文件：</p>
+                    <pre><code>version: '3.8'
+
+services:
+  letta:
+    image: letta/letta:latest
+    ports:
+      - "8283:8283"
+    environment:
+      - LETTA_PG_URI=postgresql://letta:letta@postgres:5432/letta
+      - LETTA_OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=letta
+      - POSTGRES_PASSWORD=letta
+      - POSTGRES_DB=letta
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:</code></pre>
+
+                    <p>运行：</p>
+                    <pre><code>docker-compose up -d</code></pre>
+
+                    <h3 id="using-docker">使用 Docker</h3>
+                    <pre><code># 拉取镜像
+docker pull letta/letta:latest
+
+# 运行容器
+docker run -d \
+  --name letta-server \
+  -p 8283:8283 \
+  -e LETTA_PG_URI=postgresql://letta:letta@localhost:5432/letta \
+  -e LETTA_OPENAI_API_KEY=your-api-key \
+  letta/letta:latest</code></pre>
+
+                    <h2 id="environment-variables">环境变量</h2>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>变量</th>
+                                    <th>描述</th>
+                                    <th>必需</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>LETTA_PG_URI</code></td><td>PostgreSQL 连接字符串</td><td>是</td></tr>
+                                <tr><td><code>LETTA_OPENAI_API_KEY</code></td><td>OpenAI API 密钥</td><td>如果使用 OpenAI 模型</td></tr>
+                                <tr><td><code>LETTA_ANTHROPIC_API_KEY</code></td><td>Anthropic API 密钥</td><td>如果使用 Claude 模型</td></tr>
+                                <tr><td><code>LETTA_SERVER_PORT</code></td><td>服务器端口（默认：8283）</td><td>否</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2 id="connecting-letta-code">连接 Letta Code</h2>
+                    <p>要让 Letta Code 连接到您的 Docker 服务器：</p>
+                    <pre><code># 设置基础 URL
+export LETTA_BASE_URL=http://localhost:8283
+
+# 运行 Letta Code
+letta</code></pre>
+
+                    <p>或者在配置中设置：</p>
+                    <pre><code># ~/.letta/settings.json
+{
+  "baseUrl": "http://localhost:8283"
+}</code></pre>
+
+                    <h2 id="persistence">数据持久化</h2>
+                    <p>为确保数据在容器重启之间持久化：</p>
+                    <ul>
+                        <li>使用 Docker volumes 存储数据库数据</li>
+                        <li>使用外部 PostgreSQL 数据库进行生产部署</li>
+                    </ul>
+
+                    <h2 id="production">生产部署</h2>
+                    <p>对于生产环境：</p>
+                    <ul>
+                        <li>使用外部 PostgreSQL 数据库</li>
+                        <li>配置适当的备份策略</li>
+                        <li>设置 SSL/TLS</li>
+                        <li>配置身份验证和授权</li>
+                    </ul>
+
+                    <h2 id="troubleshooting">故障排除</h2>
+
+                    <h3 id="connection-refused">连接被拒绝</h3>
+                    <p>如果无法连接到服务器：</p>
+                    <ul>
+                        <li>检查容器是否正在运行：<code>docker ps</code></li>
+                        <li>检查日志：<code>docker logs letta-server</code></li>
+                        <li>验证端口映射</li>
+                    </ul>
+
+                    <h3 id="database-errors">数据库错误</h3>
+                    <p>如果遇到数据库错误：</p>
+                    <ul>
+                        <li>验证 PostgreSQL 连接字符串</li>
+                        <li>检查数据库是否正在运行</li>
+                        <li>验证用户权限</li>
+                    </ul>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <div class="grid sm:grid-cols-2 gap-4 my-8">
+                        <a href="../../letta-code/quickstart.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">Letta Code 快速开始 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">开始使用 Letta Code</p>
+                        </a>
+                        <a href="../../api/python/index.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">API 参考 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">使用 Letta API</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>

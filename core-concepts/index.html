@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Letta 核心概念 - 代理、记忆、工具和架构">
+    <title>核心概念 | Letta 文档</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        'primary-dark': '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- 导航栏 -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="../index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">L</span>
+                    </div>
+                    <span class="font-bold text-xl">Letta 文档</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="../letta-code/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">Letta Code</a>
+                    <a href="index.html" class="text-indigo-500 font-medium">核心概念</a>
+                    <a href="../api/python/index.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">API 参考</a>
+                    <a href="../guides/docker.html" class="text-slate-600 dark:text-slate-300 hover:text-indigo-500">指南</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                    </button>
+                    <a href="https://github.com/letta-ai/letta" target="_blank" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="flex pt-16">
+        <!-- 主内容区 -->
+        <main class="flex-1">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="doc-content">
+                    <h1>核心概念</h1>
+                    <p class="text-xl text-slate-600 dark:text-slate-400 mb-8">
+                        核心概念包括代理、记忆、工具和 Letta 架构
+                    </p>
+
+                    <h2 id="llm-limitation">LLM 的根本限制</h2>
+                    <p>大型语言模型在设计上是<strong>无状态的</strong>。LLM 的知识来自两个来源：</p>
+                    <ol>
+                        <li><strong>模型权重</strong> - 训练后固定</li>
+                        <li><strong>上下文窗口</strong> - 推理时提供的临时输入</li>
+                    </ol>
+
+                    <p>这意味着 LLM 在交互之间没有持久记忆。每次 API 调用都从头开始，没有能力从过去的经验中学习或在会话之间维护状态。</p>
+
+                    <h2 id="stateful-agents">什么是有状态代理？</h2>
+                    <p><strong>有状态代理通过在所有交互中维护持久记忆和身份来克服这一限制。</strong></p>
+
+                    <p>一个有状态代理具有：</p>
+                    <ul>
+                        <li><strong>持久身份</strong> - 作为唯一实体存在，在会话之间保持连续性</li>
+                        <li><strong>主动记忆形成</strong> - 自主决定存储和更新什么信息</li>
+                        <li><strong>累积状态</strong> - 通过经验学习，而不仅仅依靠模型权重</li>
+                        <li><strong>长期上下文</strong> - 维护超越单次对话窗口的知识</li>
+                    </ul>
+
+                    <p>与传统的 LLM 应用程序（您的代码管理状态）不同，有状态代理<strong>主动管理自己的记忆</strong>，使用内置工具来读取、写入和搜索其持久存储。</p>
+
+                    <h3 id="why-statefulness">为什么有状态很重要</h3>
+                    <p>传统的 LLM 应用程序是<strong>无状态的</strong> - 每次交互都从头开始。您的应用程序必须：</p>
+                    <ul>
+                        <li>在您自己的数据库中存储所有对话历史</li>
+                        <li>每次 API 调用时发送整个上下文</li>
+                        <li>自己实现记忆和个性化逻辑</li>
+                        <li>手动管理上下文窗口限制</li>
+                    </ul>
+
+                    <p><strong>使用 Letta 的有状态代理，所有这些都为您处理好了。</strong> 代理维护自己的持久状态，智能管理其上下文窗口，并从每次交互中学习，无需您构建复杂的状态管理层。</p>
+
+                    <h2 id="stateful-vs-stateless">有状态 vs 无状态 API</h2>
+                    <p>有状态代理与传统 LLM API 之间的区别是根本性的：</p>
+
+                    <p><strong>传统 API（无状态）：</strong> 请求之间没有记忆。您的应用程序管理一切。</p>
+
+                    <p><strong>Letta（有状态）：</strong> 代理维护自己的持久状态。您只发送新消息。</p>
+
+                    <h3 id="traditional-api">传统无状态 API</h3>
+                    <p>使用无状态 API，请求之间没有状态持久化。客户端必须在每次调用时发送完整的对话历史。</p>
+
+                    <p>客户端必须在每个请求中发送完整的对话历史：</p>
+                    <ul>
+                        <li>请求 2: <code>[msg1, response1, msg2]</code></li>
+                        <li>请求 3: <code>[msg1, response1, msg2, response2, msg3]</code></li>
+                    </ul>
+
+                    <h3 id="letta-api">Letta 有状态 API</h3>
+                    <p>Letta 在服务器上维护代理状态并将其持久化到数据库。客户端只发送新消息，服务器处理所有状态管理。</p>
+
+                    <p>客户端只发送新消息：</p>
+                    <ul>
+                        <li>请求 2: <code>[msg2]</code></li>
+                        <li>请求 3: <code>[msg3]</code></li>
+                    </ul>
+
+                    <h3 id="key-differences">关键区别</h3>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>方面</th>
+                                    <th>传统（无状态）</th>
+                                    <th>Letta（有状态）</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>状态管理</td><td>客户端</td><td>服务器端</td></tr>
+                                <tr><td>请求格式</td><td>发送完整对话历史</td><td>只发送新消息</td></tr>
+                                <tr><td>记忆</td><td>无（临时）</td><td>持久数据库</td></tr>
+                                <tr><td>上下文限制</td><td>硬限制，然后失败</td><td>智能管理</td></tr>
+                                <tr><td>代理身份</td><td>无</td><td>每个代理有唯一 ID</td></tr>
+                                <tr><td>长对话</td><td>昂贵且脆弱</td><td>无限扩展</td></tr>
+                                <tr><td>个性化</td><td>应用程序必须管理</td><td>内置记忆块</td></tr>
+                                <tr><td>多会话</td><td>需要外部数据库</td><td>原生支持</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="code-comparison">代码比较</h3>
+                    <p><strong>无状态 API（例如 OpenAI）：</strong></p>
+                    <pre><code># 您必须每次发送完整的对话
+messages = [
+    {"role": "user", "content": "Hello, I'm Sarah"},
+    {"role": "assistant", "content": "Hi Sarah!"},
+    {"role": "user", "content": "What's my name?"},  # ← 新消息
+]
+
+# 发送所有内容
+response = openai.chat.completions.create(
+    model="gpt-4",
+    messages=messages  # ← 需要完整历史
+)
+
+# 您必须自己存储和管理消息
+messages.append(response.choices[0].message)</code></pre>
+
+                    <p><strong>有状态 API（Letta）：</strong></p>
+                    <pre><code># 代理已经知道上下文
+response = client.agents.messages.create(
+    agent_id=agent.id,
+    input="What's my name?"  # ← 只发送新消息
+)
+
+# 代理从其记忆块中记住 Sarah
+# 无需发送先前的消息</code></pre>
+
+                    <h2 id="agents-as-services">代理即服务</h2>
+                    <p><strong>Letta 将代理视为持久服务，而不是临时库调用。</strong></p>
+
+                    <p>在传统框架中，代理是存在于应用程序内存中的对象，当您的应用程序停止时就会消失。在 Letta 中，代理是<strong>独立的服务</strong>，它们：</p>
+                    <ul>
+                        <li>在您的应用程序未运行时继续存在</li>
+                        <li>在数据库中维护状态</li>
+                        <li>可以同时从多个应用程序访问</li>
+                        <li>在服务器上自主运行</li>
+                    </ul>
+
+                    <p>您通过 REST API 与 Letta 代理交互：</p>
+                    <pre><code>POST /agents/{agent_id}/messages</code></pre>
+
+                    <p>这种架构支持：</p>
+                    <ul>
+                        <li><strong>多用户应用程序</strong> - 每个用户获得自己的持久代理</li>
+                        <li><strong>代理间通信</strong> - 代理可以相互发送消息</li>
+                        <li><strong>后台处理</strong> - 代理可以在您的应用程序离线时继续工作</li>
+                        <li><strong>部署灵活性</strong> - 独立于应用程序扩展代理</li>
+                    </ul>
+
+                    <h2 id="persistence">默认持久化</h2>
+                    <p>在 Letta 中，<strong>所有状态都自动持久化</strong>：</p>
+                    <ul>
+                        <li>代理记忆（记忆块和归档记忆）</li>
+                        <li>消息历史</li>
+                        <li>工具配置</li>
+                        <li>代理状态和上下文</li>
+                    </ul>
+
+                    <p>因为所有内容都持久化：</p>
+                    <ul>
+                        <li>代理可以随时暂停和恢复</li>
+                        <li>您可以在不同机器上重新加载代理</li>
+                        <li>状态永远不会因应用程序重启而丢失</li>
+                        <li>长对话不会降低性能</li>
+                    </ul>
+
+                    <h2 id="self-editing-memory">自我编辑记忆</h2>
+                    <p>与被动检索文档的 RAG 系统不同，<strong>Letta 代理主动管理自己的记忆</strong>。代理使用内置工具来：</p>
+                    <ul>
+                        <li>在学习新信息时编辑其记忆块</li>
+                        <li>将事实插入归档记忆以进行长期存储</li>
+                        <li>在需要上下文时搜索过去的对话</li>
+                    </ul>
+
+                    <p>这使代理能够：</p>
+                    <ul>
+                        <li>随时间学习用户偏好</li>
+                        <li>在会话之间保持一致的个性</li>
+                        <li>与用户建立长期关系</li>
+                        <li>从交互中持续改进</li>
+                    </ul>
+
+                    <p><a href="../letta-code/memory.html">了解更多关于记忆 →</a></p>
+
+                    <h2 id="agents-vs-threads">代理 vs 线程</h2>
+                    <p>Letta 没有<strong>线程</strong>或<strong>会话</strong>的概念。相反，只有具有单一永久消息历史的<strong>有状态代理</strong>。</p>
+
+                    <p><strong>为什么没有线程？</strong> Letta 基于这样的原则构建：<strong>所有交互都应该是持久记忆的一部分</strong>，而不是临时会话。这实现了：</p>
+                    <ul>
+                        <li>跨所有对话的持续学习</li>
+                        <li>真正的长期记忆和关系</li>
+                        <li>"开始新线程"时没有上下文丢失</li>
+                    </ul>
+
+                    <p>对于多用户应用程序，我们建议<strong>为每个用户创建一个代理</strong>。每个代理维护关于该特定用户的自己的持久记忆。</p>
+
+                    <p>如果您需要对话模板或起点，请使用 <a href="https://docs.letta.com/guides/agents/templates" target="_blank">代理模板</a> 来创建具有预配置状态的新代理。</p>
+
+                    <h2 id="llm-os">LLM 操作系统</h2>
+                    <p><strong>LLM 操作系统</strong>是管理代理执行、状态和记忆的基础设施层。这包括：</p>
+                    <ul>
+                        <li><strong>代理运行时</strong> - 管理工具执行和推理循环</li>
+                        <li><strong>记忆层</strong> - 处理上下文窗口管理和持久化</li>
+                        <li><strong>有状态层</strong> - 协调数据库、缓存和执行之间的状态</li>
+                    </ul>
+
+                    <p>Letta 的架构灵感来自 <a href="https://arxiv.org/abs/2310.08560" target="_blank">MemGPT 研究论文</a>，该论文引入了这些概念。</p>
+
+                    <h2 id="beyond-model-size">超越模型大小</h2>
+                    <p>通往更强大 AI 系统的路径不仅仅是更大的模型或更长的上下文窗口。有状态代理代表了一个根本性的转变：通过累积经验学习、与用户建立持久关系、无需重新训练即可持续改进的代理。</p>
+
+                    <p>使用有状态代理，您可以构建：</p>
+                    <ul>
+                        <li><strong>个性化助手</strong>，随时间适应个人用户</li>
+                        <li><strong>学习系统</strong>，从反馈和交互中改进</li>
+                        <li><strong>长期关系</strong>，代理发展关于用户和任务的深度上下文</li>
+                        <li><strong>自主服务</strong>，独立运行并维护自己的知识</li>
+                    </ul>
+
+                    <p>这种架构转变——从无状态函数调用到有状态代理服务——实现了一类传统 LLM API 无法实现的新型 AI 应用。</p>
+
+                    <h2 id="next-steps">下一步</h2>
+                    <div class="grid sm:grid-cols-2 gap-4 my-8">
+                        <a href="../letta-code/quickstart.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">构建您的第一个代理 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">使用 Letta API 创建有状态代理</p>
+                        </a>
+                        <a href="../letta-code/memory.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">了解记忆 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">代理如何管理记忆</p>
+                        </a>
+                        <a href="../api/python/index.html" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">代理概述 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">深入了解 Letta 的代理架构</p>
+                        </a>
+                        <a href="https://arxiv.org/abs/2310.08560" target="_blank" class="block p-4 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                            <h3 class="font-semibold mb-1">MemGPT 研究 →</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">阅读 Letta 背后的研究</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
